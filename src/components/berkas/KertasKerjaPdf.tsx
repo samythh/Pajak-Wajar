@@ -1,4 +1,4 @@
-import { Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
+import { Document, Link, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
 import { formatCurrency, formatPersenNorma, formatTanggalIndonesia, formatTarif } from '@/lib/format';
 import { basisAturan, cariKlu } from '@/lib/regulasi';
 import type { HasilAuditPajak, HasilSkema, IdSkema, StatusKelayakan } from '@/types/pajak';
@@ -199,8 +199,8 @@ export function KertasKerjaPdf({ hasil }: { hasil: HasilAuditPajak }) {
           <Baris kunci="Status perpajakan pasangan" nilai={profil.statusPerpajakanPasangan.replaceAll('_', ' ')} />
           <Baris kunci="Neto pegawai sebelum PTKP" nilai={!profil.jugaPegawaiTetap ? 'Bukan pegawai' : profil.penghasilanNetoPegawai === undefined ? 'Belum diisi' : formatCurrency(profil.penghasilanNetoPegawai)} />
           <Baris
-            kunci="Kegiatan usaha (KLU)"
-            nilai={klu ? `${klu.nama} (${klu.kluKode})` : profil.kluKode}
+            kunci="Kegiatan (KLU lampiran Norma)"
+            nilai={klu ? `${klu.nama} (${klu.kluKode})` : 'Kegiatan belum tersedia atau belum dipastikan'}
           />
           <Baris kunci="Kelompok wilayah" nilai={basisAturan.kelompokWilayah[profil.wilayah].nama} />
           <Baris kunci="Keadaan keluarga (PTKP)" nilai={profil.statusPtkp} />
@@ -289,6 +289,27 @@ export function KertasKerjaPdf({ hasil }: { hasil: HasilAuditPajak }) {
 
         <Text style={s.kaki} fixed render={({ pageNumber, totalPages }) => `PajakWajar / ${hasil.versiRegulasi} / Halaman ${pageNumber} dari ${totalPages}`} />
       </Page>)}
+
+      {klu && <Page size="A4" style={s.page}>
+        <Text style={s.judul}>Rujukan klasifikasi kegiatan</Text>
+        <Text style={s.subjudul}>PajakWajar / Pencocokan versi KBLI 2020</Text>
+        <View style={s.bagian}>
+          <Text style={s.bagianJudul}>KODE UNTUK MEMBACA LAMPIRAN NORMA</Text>
+          <Text style={{ fontFamily: 'Helvetica-Bold' }}>{klu.kluKode} — {klu.uraianLampiran}</Text>
+          <Text style={s.sitasi}>Lampiran I PER-17/PJ/2015, halaman PDF {klu.pemetaanKbli2020.halamanNorma}.</Text>
+        </View>
+        <View style={s.bagian}>
+          <Text style={s.bagianJudul}>PADANAN KEGIATAN PADA KBLI 2020</Text>
+          {klu.pemetaanKbli2020.padanan.map((item) => <View key={item.kode} style={s.poin} wrap={false}>
+            <Text style={{ width: 44, color: '#17497D' }}>{item.kode}</Text>
+            <Text style={s.isiPoin}>{item.nama} (BPS, halaman PDF {item.halamanPdf})</Text>
+          </View>)}
+          <Link src={klu.pemetaanKbli2020.sumberKbli} style={s.sitasi}>Buka sumber resmi BPS: KBLI 2020</Link>
+        </View>
+        <Text style={{ marginBottom: 14 }}>{klu.pemetaanKbli2020.catatan}</Text>
+        <Text style={s.penafian}>Daftar ini rujukan padanan kegiatan, bukan penetapan kode usaha Anda. Kode baru dapat memiliki cakupan berbeda dan tidak otomatis memperoleh persentase Norma yang sama. KBLI 2025 sudah diterbitkan; periksa versi kode yang digunakan pada layanan Anda.</Text>
+        <Text style={s.kaki} fixed render={({ pageNumber, totalPages }) => `PajakWajar / ${hasil.versiRegulasi} / Halaman ${pageNumber} dari ${totalPages}`} />
+      </Page>}
 
       <Page size="A4" style={s.page}>
         <Text style={s.judul}>Saran dan langkah berikutnya</Text>

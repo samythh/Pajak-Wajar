@@ -83,9 +83,9 @@ Hanya tiga yang benar sejak awal: 90002 (KEGIATAN PEKERJA SENI, 50/50/50), 62010
 
 Fixture ke-22 KLU dikunci di `tests/schema.test.ts`, sehingga perubahan angka tanpa membaca ulang lampiran akan membuat uji gagal.
 
-## Yang masih harus dikerjakan manusia
+## Status tindak lanjut verifikasi
 
-1. **Cocokkan kode KLU ke KBLI 2020.** Lampiran I memakai KLU KEP-233/PJ/2012. Kode yang dipakai di sini benar untuk memilih persentase norma, tetapi belum tentu sama dengan kode KBLI yang tercatat pada profil Wajib Pajak di Coretax.
+1. **Pencocokan KBLI 2020 selesai pada 6 September 2026 untuk 22 kegiatan.** Rincian padanan dan batas cakupan tersedia di [KLU-KBLI-2020.md](KLU-KBLI-2020.md). Ini tidak menetapkan kode aktual wajib pajak dan tidak menggantikan pemeriksaan versi KBLI 2025 pada layanan yang sudah beralih.
 2. **Baca PP 55/2022 Pasal 60** dari salinan yang punya lapisan teks, untuk melengkapi sitasi pelaksanaan pembebasan Rp500 juta.
 3. **Klik satu per satu seluruh URL** pada `data/klu_rules.json`. URL PP 20/2026, PP 55/2022, UU 7/2021, UU 36/2008, PER-17/PJ/2015, dan Lampiran I sudah dibuka dan berkasnya benar-benar terunduh.
 4. **Tinjau profesi yang tidak disebut Pasal 56 ayat (4).** Programmer lepas, desainer, dan fotografer kini menghasilkan `PERLU_DIPASTIKAN`. Bila DJP menerbitkan penegasan, ubah `pekerjaanBebas` pada KLU terkait.
@@ -98,5 +98,5 @@ Fixture ke-22 KLU dikunci di `tests/schema.test.ts`, sehingga perubahan angka ta
 - [x] Aturan efektif untuk tahun pajak yang dipilih.
 - [x] Perubahan diterjemahkan ke `data/klu_rules.json` dan kasus uji.
 - [x] Persentase norma per KLU dicocokkan ke Lampiran I, baris per baris.
-- [ ] Kode KLU dicocokkan ke KBLI 2020.
+- [x] 22 kegiatan KLU lampiran Norma dicocokkan ke KBLI 2020; padanan tidak dianggap selalu satu-ke-satu.
 - [ ] PP 55/2022 Pasal 60 dikutip dari salinan berlapis teks.

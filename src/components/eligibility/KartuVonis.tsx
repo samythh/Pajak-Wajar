@@ -1,6 +1,8 @@
 import { TombolUnduhKertasKerja } from '@/components/berkas/TombolUnduhKertasKerja';
 import { IkonStatus } from '@/components/ui/StatusProses';
 import { Maskot } from '@/components/ui/Maskot';
+import { KlasifikasiKegiatan } from '@/components/eligibility/KlasifikasiKegiatan';
+import { cariKlu } from '@/lib/regulasi';
 import { formatCurrency, formatPersenNorma, formatTarif } from '@/lib/format';
 import type { HasilAuditPajak, HasilSkema, IdSkema, StatusKelayakan } from '@/types/pajak';
 
@@ -98,6 +100,7 @@ function Perhitungan({ skema }: { skema: HasilSkema }) {
 }
 
 export function KartuVonis({ hasil }: { hasil: HasilAuditPajak }) {
+  const klu = cariKlu(hasil.profil.kluKode);
   return (
     <section className="bg-paper p-4 shadow-sheet sm:p-7" aria-labelledby="judul-hasil" aria-live="polite">
       <div className="success-banner mb-6 flex items-center gap-4 border border-blue/15 bg-white px-4 py-4 text-blue">
@@ -119,6 +122,7 @@ export function KartuVonis({ hasil }: { hasil: HasilAuditPajak }) {
         </span>
       </div>
 
+      {klu && <div className="mb-5"><KlasifikasiKegiatan klu={klu} /></div>}
       <div className="space-y-4">
         {hasil.skema.map((item, index) => {
           const ui = tampilan[item.statusKelayakan];

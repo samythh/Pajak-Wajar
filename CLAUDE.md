@@ -85,7 +85,9 @@ Salinan teks asli PP 20/2026 yang dipakai tersimpan di `docs/sumber/pp-20-2026.t
 3. **Daftar KLU pekerjaan bebas** — Pasal 56 ayat (4) huruf a sampai k. Profesi yang tidak disebut satu per satu, misalnya programmer lepas, desainer, dan fotografer, harus menghasilkan `PERLU_DIPASTIKAN`, bukan vonis pasti.
 4. **Ketentuan peralihan** — Pasal II angka 1 huruf a. WP OP yang jangka waktunya berakhir pada Tahun Pajak 2024 dapat memakai PP ini untuk Tahun Pajak 2025 dan 2026; yang berakhir pada 2025 hanya untuk 2026.
 
-**Yang masih terbuka:** kode KLU pada `data/klu_rules.json` belum dicocokkan ke KBLI 2020, meskipun persentase normanya sudah dicocokkan baris per baris ke Lampiran I PER-17/PJ/2015. PDF PP 55/2022 di JDIH berupa pindaian gambar, sehingga Pasal 60 belum dapat dikutip langsung dan sitasinya ditandai `DALAM_REVIEW`.
+**Klasifikasi kegiatan:** 22 kegiatan KLU pada `data/klu_rules.json` sudah dicocokkan ke KBLI 2020 pada 6 September 2026; padanan terpisah dari kode Norma, dengan batas cakupan di `docs/KLU-KBLI-2020.md`. KBLI 2025 sudah diterbitkan dan bukan versi yang dikonversi oleh pemetaan ini.
+
+**Yang masih terbuka:** PDF PP 55/2022 di JDIH berupa pindaian gambar, sehingga Pasal 60 belum dapat dikutip langsung dan sitasinya ditandai `DALAM_REVIEW`.
 
 ---
 

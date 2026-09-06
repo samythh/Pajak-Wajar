@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { InputBuktiPotong } from '@/components/eligibility/InputBuktiPotong';
 import { KartuVonis } from '@/components/eligibility/KartuVonis';
+import { KlasifikasiKegiatan } from '@/components/eligibility/KlasifikasiKegiatan';
 import { InputRupiah } from '@/components/ui/InputRupiah';
 import { PanelProses } from '@/components/ui/StatusProses';
 import { PetunjukWaji } from '@/components/ui/PetunjukWaji';
@@ -171,6 +172,7 @@ export function AlurKelayakan() {
   }, [langkah, hasil]);
 
   const pilihanKlu = useMemo(() => daftarKlu(), []);
+  const kluTerpilih = pilihanKlu.find((item) => item.kluKode === profil.kluKode);
 
   const ubah = <K extends keyof ProfilWajibPajak>(kunci: K, nilai: ProfilWajibPajak[K]) =>
     setProfil((lama) => ({ ...lama, [kunci]: nilai }));
@@ -317,6 +319,11 @@ export function AlurKelayakan() {
                   );
                 })}
               </div>
+              <label className={`choice-control mt-3 flex cursor-pointer items-start gap-3 border p-4 text-sm ${profil.kluKode === 'BELUM_DIDUKUNG' ? 'border-blue bg-blue/5' : 'border-line'}`}>
+                <input type="radio" name="klu" className="mt-1 accent-blue" checked={profil.kluKode === 'BELUM_DIDUKUNG'} onChange={() => ubah('kluKode', 'BELUM_DIDUKUNG')} />
+                <span><strong className="block">Kegiatan saya belum tersedia atau saya belum yakin</strong><span className="mt-1 block text-xs leading-5 text-margin">Tidak perlu memilih kegiatan yang hanya mirip. Kelayakan dan Norma akan ditandai perlu dipastikan.</span></span>
+              </label>
+              {kluTerpilih && <KlasifikasiKegiatan klu={kluTerpilih} />}
               {sudahMencoba && !profil.kluKode && (
                 <p role="alert" className="motion-step-next mt-4 border-l-2 border-stamp bg-red-50 px-4 py-3 text-sm font-semibold text-stamp">
                   Pilih satu pekerjaan agar Anda bisa melanjutkan.

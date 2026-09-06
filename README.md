@@ -7,7 +7,7 @@
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/AkuSukaProject/Pajak-Wajar)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 [![Status](https://img.shields.io/badge/Status-Aplikasi_Berfungsi-2ea44f?style=for-the-badge)](#fitur-unggulan)
-[![Tes](https://img.shields.io/badge/Vitest-141_lulus-2ea44f?style=for-the-badge)](#testing)
+[![Tes](https://img.shields.io/badge/Vitest-154_lulus-2ea44f?style=for-the-badge)](#testing)
 
 **Submission for ITECHNO CUP 2026 - Web Development**
 
@@ -107,7 +107,7 @@ Seluruh keputusan kelayakan dan seluruh perhitungan lahir dari aturan yang ditul
 - [x] Mengimplementasikan pengujian aturan dan perhitungan (lihat jumlah terbaru pada bagian Testing).
 - [x] Mencocokkan persentase Norma ke Lampiran I PER-17/PJ/2015, baris per baris (17 dari 20 KLU ternyata salah dan sudah dikoreksi).
 - [x] Menguji route OCR: 18 tes dengan layanan disimulasikan, plus satu tes ke Gemini sungguhan yang sudah berhasil dengan gambar contoh.
-- [ ] Mencocokkan kode KLU ke KBLI 2020.
+- [x] Mencocokkan 22 kegiatan KLU lampiran Norma ke KBLI 2020, termasuk padanan bercabang dan batas cakupan ([hasil pemeriksaan](docs/KLU-KBLI-2020.md)). KBLI 2020 adalah versi rujukan, bukan klaim kode terbaru; KBLI 2025 sudah diterbitkan.
 - [x] Menjalankan `npm run test:ocr` dengan `GEMINI_API_KEY` sungguhan.
 - [x] Deployment publik ke Vercel melalui repo pribadi.
 
@@ -186,8 +186,8 @@ OCR          : Gemini API, structured JSON, temperature 0; opsional dan butuh pe
 ```text
 Package Mgmt : npm dengan package-lock.json
 Deployment   : Vercel (region sin1), https://pajak-wajar.vercel.app/
-CI/CD        : Belum ada workflow di repositori
-Testing      : Vitest; 141 tes rutin pada 9 berkas. Ajv 2020 untuk integritas data aturan
+CI/CD        : GitHub Actions (lint, tipe, tes, build, audit) dan deployment Vercel
+Testing      : Vitest; 154 tes rutin pada 10 berkas. Ajv 2020 untuk integritas data aturan
 Type Check   : TypeScript (tsc --noEmit), tanpa `any`
 Monitoring   : Belum dikonfigurasi
 ```
@@ -519,11 +519,12 @@ npm run build
 
 ### Test Coverage
 
-**141 tes rutin** pada sembilan berkas, ditambah satu tes integrasi OCR opsional:
+**154 tes rutin** pada sepuluh berkas, ditambah satu tes integrasi OCR opsional:
 
 | Berkas | Tes | Fokus |
 |--------|-----|-------|
 | [tests/schema.test.ts](./tests/schema.test.ts) | 11 | Integritas `data/klu_rules.json` lewat Ajv Draft 2020-12; domain sumber primer; larangan menyitasi Pasal 59 yang sudah dihapus; persentase Norma ke-22 KLU dikunci pada fixture Lampiran I. |
+| [tests/klasifikasi.test.ts](./tests/klasifikasi.test.ts) | 13 | Padanan 22 kegiatan ke KBLI 2020, perubahan dan pemecahan kode, batas alias kegiatan, serta pencegahan pemberian Norma otomatis untuk kode yang belum didukung. |
 | [tests/calculator.test.ts](./tests/calculator.test.ts) | 14 | Tarif progresif berlapis, termasuk bukti bahwa PKP Rp337 juta ≠ PKP × 25% dan kecocokan dengan contoh resmi UU HPP (PKP Rp6 miliar → Rp1.794.000.000). |
 | [tests/eligibility.test.ts](./tests/eligibility.test.ts) | 32 | Agregasi prioritas dan empat saringan kelayakan. |
 | [tests/audit-pajak.test.ts](./tests/audit-pajak.test.ts) | 13 | Konsistensi status kalkulasi dan batasan perhitungan. |

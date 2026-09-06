@@ -1,0 +1,20 @@
+[
+  {
+    "dokumen": "kbli-2020.pdf",
+    "url": "https://ppid.bps.go.id/upload/doc/Klasifikasi_Baku_Lapangan_Usaha_Indonesia_2020_1718251770.pdf",
+    "diakses": "2026-09-06",
+    "sha256": "baf39efb8b9212f90866f0929c4ff09637e9197898b15cb535b450246d8f6543"
+  },
+  {
+    "dokumen": "norma.pdf",
+    "url": "https://www.pajak.go.id/sites/default/files/2019-06/Lampiran%201_PER_17_PJ_2015.pdf",
+    "diakses": "2026-09-06",
+    "sha256": "26a2071a9d1e854b6cc2670ae70b0323c0468cbe7ea5e197e38626b03f6ad2ee"
+  },
+  {
+    "dokumen": "konversi-2015-2020.pdf",
+    "url": "https://ppid.bps.go.id/upload/doc/Tabel_Kesesuaian_KBLI_2020_-_KBLI_2015_1759891275.pdf",
+    "diakses": "2026-09-06",
+    "sha256": "c9d8a3d9e022e2e862e230ae9eb125a6070ec2fc9a4a860629807e39101185ab"
+  }
+]

@@ -58,6 +58,16 @@ export type EntriKlu = {
   rujukanPasal56Ayat4: string | null;
   normaPersen: Record<KelompokWilayahKey, number>;
   dasarHukum: DasarHukumDetail[];
+  /** Padanan kegiatan untuk rujukan; tidak mengganti kunci persentase Norma. */
+  pemetaanKbli2020: {
+    metode: 'PENCOCOKAN_URAIAN_DAN_TABEL_BPS';
+    tanggalPemeriksaan: string;
+    hubungan: 'SATU_PADANAN' | 'BEBERAPA_PADANAN';
+    padanan: Array<{ kode: string; nama: string; halamanPdf: number }>;
+    catatan: string;
+    sumberKbli: string;
+    halamanNorma: number;
+  };
 };
 
 export type BasisAturan = {

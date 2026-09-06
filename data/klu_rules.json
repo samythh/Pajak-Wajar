@@ -3,7 +3,7 @@
   "berlakuSejak": "2026-04-22",
   "lembaranNegara": "LN RI Tahun 2026 Nomor 43, TLN RI Nomor 7173",
   "statusDokumen": "Terverifikasi terhadap teks asli PP 20/2026, UU 7/2021, UU 36/2008, dan PER-17/PJ/2015 beserta Lampiran I",
-  "tanggalVerifikasiTerakhir": "2026-09-05",
+  "tanggalVerifikasiTerakhir": "2026-09-06",
   "tahunPajakDidukung": [
     2025,
     2026
@@ -290,13 +290,15 @@
     "ketentuanPeralihanAgregat2026": {
       "kode": "PERALIHAN_AGREGAT_2026",
       "statusVerifikasi": "DALAM_REVIEW",
-      "dasarHukum": [{
-        "namaRegulasi": "PP No. 20 Tahun 2026",
-        "pasalAtauLampiran": "Pasal II angka 1 huruf f",
-        "fungsi": "Pemeriksaan riwayat peralihan pengecualian Pasal 57 ayat (2) huruf e sampai akhir 2026",
-        "url": "https://jdih.kemenkeu.go.id/dok/pp-20-tahun-2026",
-        "statusVerifikasi": "DALAM_REVIEW"
-      }]
+      "dasarHukum": [
+        {
+          "namaRegulasi": "PP No. 20 Tahun 2026",
+          "pasalAtauLampiran": "Pasal II angka 1 huruf f",
+          "fungsi": "Pemeriksaan riwayat peralihan pengecualian Pasal 57 ayat (2) huruf e sampai akhir 2026",
+          "url": "https://jdih.kemenkeu.go.id/dok/pp-20-tahun-2026",
+          "statusVerifikasi": "DALAM_REVIEW"
+        }
+      ]
     },
     "ketentuanPeralihan2025": {
       "kode": "PERALIHAN_2025",
@@ -316,25 +318,17 @@
   "klu": [
     {
       "kluKode": "90002",
-      "nama": "Pekerja seni, kreator konten, dan influencer",
+      "nama": "Pekerja seni dan kreator konten (kegiatan seni)",
       "uraianLampiran": "KEGIATAN PEKERJA SENI",
       "alias": [
-        "content creator",
-        "kreator konten",
-        "influencer",
-        "selebgram",
-        "youtuber",
-        "tiktoker",
-        "streamer",
-        "affiliator",
-        "bloger",
-        "vloger",
-        "penyanyi",
-        "musisi",
         "penulis",
+        "musisi",
+        "aktor",
+        "youtuber",
+        "kreator konten seni",
+        "penyanyi",
         "pengarang",
-        "novelis",
-        "penerjemah"
+        "novelis"
       ],
       "bentukKegiatan": "PEKERJAAN_BEBAS",
       "pekerjaanBebas": "YA",
@@ -359,7 +353,42 @@
           "url": "https://www.pajak.go.id/sites/default/files/2019-06/Lampiran%201_PER_17_PJ_2015.pdf",
           "statusVerifikasi": "TERVERIFIKASI"
         }
-      ]
+      ],
+      "pemetaanKbli2020": {
+        "metode": "PENCOCOKAN_URAIAN_DAN_TABEL_BPS",
+        "tanggalPemeriksaan": "2026-09-06",
+        "hubungan": "BEBERAPA_PADANAN",
+        "padanan": [
+          {
+            "kode": "90021",
+            "nama": "PELAKU KREATIF SENI PERTUNJUKAN",
+            "halamanPdf": 795
+          },
+          {
+            "kode": "90022",
+            "nama": "PELAKU KREATIF SENI MUSIK",
+            "halamanPdf": 795
+          },
+          {
+            "kode": "90023",
+            "nama": "AKTIVITAS PELAKU KREATIF SENI RUPA",
+            "halamanPdf": 795
+          },
+          {
+            "kode": "90024",
+            "nama": "AKTIVITAS PENULIS DAN PEKERJA SASTRA",
+            "halamanPdf": 796
+          },
+          {
+            "kode": "90029",
+            "nama": "AKTIVITAS PEKERJA SENI DAN PEKERJA KREATIF LAINNYA",
+            "halamanPdf": 796
+          }
+        ],
+        "catatan": "Pekerja seni terurai menurut bidang pertunjukan, musik, rupa, sastra, atau kreatif lainnya. Nama platform atau sebutan influencer tidak menentukan satu KBLI. Padanan 90029 lebih luas; komisi afiliasi, perdagangan, dan jasa iklan tidak otomatis masuk kegiatan pekerja seni.",
+        "sumberKbli": "https://ppid.bps.go.id/upload/doc/Klasifikasi_Baku_Lapangan_Usaha_Indonesia_2020_1718251770.pdf",
+        "halamanNorma": 360
+      }
     },
     {
       "kluKode": "90005",
@@ -395,7 +424,22 @@
           "url": "https://www.pajak.go.id/sites/default/files/2019-06/Lampiran%201_PER_17_PJ_2015.pdf",
           "statusVerifikasi": "TERVERIFIKASI"
         }
-      ]
+      ],
+      "pemetaanKbli2020": {
+        "metode": "PENCOCOKAN_URAIAN_DAN_TABEL_BPS",
+        "tanggalPemeriksaan": "2026-09-06",
+        "hubungan": "SATU_PADANAN",
+        "padanan": [
+          {
+            "kode": "90025",
+            "nama": "JURNALIS BERITA INDEPENDEN",
+            "halamanPdf": 796
+          }
+        ],
+        "catatan": "Jurnalis berita independen berpadanan dengan 90025. Jangan memakai 90005 sebagai kode KBLI 2020.",
+        "sumberKbli": "https://ppid.bps.go.id/upload/doc/Klasifikasi_Baku_Lapangan_Usaha_Indonesia_2020_1718251770.pdf",
+        "halamanNorma": 360
+      }
     },
     {
       "kluKode": "62010",
@@ -435,19 +479,54 @@
           "url": "https://www.pajak.go.id/sites/default/files/2019-06/Lampiran%201_PER_17_PJ_2015.pdf",
           "statusVerifikasi": "TERVERIFIKASI"
         }
-      ]
+      ],
+      "pemetaanKbli2020": {
+        "metode": "PENCOCOKAN_URAIAN_DAN_TABEL_BPS",
+        "tanggalPemeriksaan": "2026-09-06",
+        "hubungan": "BEBERAPA_PADANAN",
+        "padanan": [
+          {
+            "kode": "62011",
+            "nama": "AKTIVITAS PENGEMBANGAN VIDEO GAME",
+            "halamanPdf": 633
+          },
+          {
+            "kode": "62012",
+            "nama": "AKTIVITAS PENGEMBANGAN APLIKASI PERDAGANGAN MELALUI INTERNET (E- COMMERCE)",
+            "halamanPdf": 633
+          },
+          {
+            "kode": "62013",
+            "nama": "AKTIVITAS PEMROGRAMAN DAN PRODUKSI KONTEN MEDIA IMERSIF",
+            "halamanPdf": 633
+          },
+          {
+            "kode": "62014",
+            "nama": "AKTIVITAS PENGEMBANGAN TEKNOLOGI BLOCKCHAIN",
+            "halamanPdf": 634
+          },
+          {
+            "kode": "62015",
+            "nama": "AKTIVITAS PEMROGRAMAN BERBASIS KECERDASAN ARTIFISIAL",
+            "halamanPdf": 634
+          },
+          {
+            "kode": "62019",
+            "nama": "AKTIVITAS PEMROGRAMAN KOMPUTER LAINNYA",
+            "halamanPdf": 634
+          }
+        ],
+        "catatan": "Pilih rincian pengembangan gim, e-commerce, media imersif, blockchain, AI, atau pemrograman lainnya sesuai pekerjaan. Kode 62010 adalah rujukan lampiran Norma; konsultasi perangkat keras dan pengelolaan fasilitas komputer berbeda dari pemrograman.",
+        "sumberKbli": "https://ppid.bps.go.id/upload/doc/Klasifikasi_Baku_Lapangan_Usaha_Indonesia_2020_1718251770.pdf",
+        "halamanNorma": 300
+      }
     },
     {
       "kluKode": "74100",
-      "nama": "Perancangan khusus (desainer grafis, UI/UX, ilustrator)",
+      "nama": "Perancangan khusus (desain grafis, interior, dan produk)",
       "uraianLampiran": "JASA PERANCANGAN KHUSUS",
       "alias": [
-        "ui/ux designer",
         "desainer grafis",
-        "graphic designer",
-        "ilustrator",
-        "animator",
-        "3d artist",
         "desain interior",
         "desainer produk",
         "perancang mode"
@@ -475,19 +554,97 @@
           "url": "https://www.pajak.go.id/sites/default/files/2019-06/Lampiran%201_PER_17_PJ_2015.pdf",
           "statusVerifikasi": "TERVERIFIKASI"
         }
-      ]
+      ],
+      "pemetaanKbli2020": {
+        "metode": "PENCOCOKAN_URAIAN_DAN_TABEL_BPS",
+        "tanggalPemeriksaan": "2026-09-06",
+        "hubungan": "BEBERAPA_PADANAN",
+        "padanan": [
+          {
+            "kode": "74111",
+            "nama": "AKTIVITAS DESAIN ALAT TRANSPORTASI DAN PERMESINAN",
+            "halamanPdf": 696
+          },
+          {
+            "kode": "74112",
+            "nama": "AKTIVITAS DESAIN PERALATAN RUMAH TANGGA DAN FURNITUR",
+            "halamanPdf": 696
+          },
+          {
+            "kode": "74113",
+            "nama": "AKTIVITAS DESAIN TEKSTIL, FASHION DAN APPAREL",
+            "halamanPdf": 697
+          },
+          {
+            "kode": "74114",
+            "nama": "AKTIVITAS DESAIN INDUSTRI STRATEGIS DAN PERTAHANAN",
+            "halamanPdf": 697
+          },
+          {
+            "kode": "74115",
+            "nama": "AKTIVITAS DESAIN ALAT KOMUNIKASI DAN ELEKTRONIKA",
+            "halamanPdf": 697
+          },
+          {
+            "kode": "74116",
+            "nama": "AKTIVITAS DESAIN PERALATAN OLAHRAGA DAN PERMAINAN",
+            "halamanPdf": 697
+          },
+          {
+            "kode": "74117",
+            "nama": "AKTIVITAS DESAIN PRODUK KESEHATAN, KOSMETIK DAN PERLENGKAPAN LABORATORIUM",
+            "halamanPdf": 697
+          },
+          {
+            "kode": "74118",
+            "nama": "AKTIVITAS DESAIN PENGEMASAN",
+            "halamanPdf": 698
+          },
+          {
+            "kode": "74119",
+            "nama": "AKTIVITAS DESAIN INDUSTRI LAINNYA",
+            "halamanPdf": 698
+          },
+          {
+            "kode": "74120",
+            "nama": "AKTIVITAS DESAIN INTERIOR",
+            "halamanPdf": 698
+          },
+          {
+            "kode": "74130",
+            "nama": "AKTIVITAS DESAIN KOMUNIKASI VISUAL/ DESAIN GRAFIS",
+            "halamanPdf": 699
+          },
+          {
+            "kode": "74141",
+            "nama": "AKTIVITAS DESAIN KHUSUS FILM, VIDEO, PROGRAM TV, ANIMASI DAN KOMIK",
+            "halamanPdf": 700
+          },
+          {
+            "kode": "74142",
+            "nama": "AKTIVITAS DESAIN KONTEN GAME",
+            "halamanPdf": 700
+          },
+          {
+            "kode": "74149",
+            "nama": "AKTIVITAS DESAIN KONTEN KREATIF LAINYA",
+            "halamanPdf": 700
+          }
+        ],
+        "catatan": "Desain terurai menjadi desain industri, interior, komunikasi visual, dan konten kreatif. Cakupan kode baru tidak selalu identik: perencanaan desain berbeda dari produksi film/gim, pemrograman web, arsitektur, dan karya seni. Pemetaan ini bukan pemberian persentase Norma otomatis bagi seluruh isi kode baru.",
+        "sumberKbli": "https://ppid.bps.go.id/upload/doc/Klasifikasi_Baku_Lapangan_Usaha_Indonesia_2020_1718251770.pdf",
+        "halamanNorma": 323
+      }
     },
     {
       "kluKode": "74201",
-      "nama": "Jasa fotografi dan videografi",
+      "nama": "Fotografi dan perekaman video acara",
       "uraianLampiran": "JASA FOTOGRAFI",
       "alias": [
         "fotografer",
-        "videografer",
-        "video editor",
-        "cinematographer",
-        "jasa foto",
-        "jasa video"
+        "foto pernikahan",
+        "video acara",
+        "fotografi komersial"
       ],
       "bentukKegiatan": "PEKERJAAN_BEBAS",
       "pekerjaanBebas": "PERLU_DIPASTIKAN",
@@ -512,7 +669,22 @@
           "url": "https://www.pajak.go.id/sites/default/files/2019-06/Lampiran%201_PER_17_PJ_2015.pdf",
           "statusVerifikasi": "TERVERIFIKASI"
         }
-      ]
+      ],
+      "pemetaanKbli2020": {
+        "metode": "PENCOCOKAN_URAIAN_DAN_TABEL_BPS",
+        "tanggalPemeriksaan": "2026-09-06",
+        "hubungan": "SATU_PADANAN",
+        "padanan": [
+          {
+            "kode": "74201",
+            "nama": "AKTIVITAS FOTOGRAFI",
+            "halamanPdf": 701
+          }
+        ],
+        "catatan": "Mencakup fotografi dan perekaman video acara seperti pernikahan atau rapat. Produksi film, video/program televisi, dan pascaproduksi yang masuk kelompok 591 berbeda dari jasa fotografi.",
+        "sumberKbli": "https://ppid.bps.go.id/upload/doc/Klasifikasi_Baku_Lapangan_Usaha_Indonesia_2020_1718251770.pdf",
+        "halamanNorma": 323
+      }
     },
     {
       "kluKode": "70209",
@@ -549,7 +721,27 @@
           "url": "https://www.pajak.go.id/sites/default/files/2019-06/Lampiran%201_PER_17_PJ_2015.pdf",
           "statusVerifikasi": "TERVERIFIKASI"
         }
-      ]
+      ],
+      "pemetaanKbli2020": {
+        "metode": "PENCOCOKAN_URAIAN_DAN_TABEL_BPS",
+        "tanggalPemeriksaan": "2026-09-06",
+        "hubungan": "BEBERAPA_PADANAN",
+        "padanan": [
+          {
+            "kode": "70204",
+            "nama": "AKTIVITAS KONSULTANSI MANAJEMEN INDUSTRI",
+            "halamanPdf": 686
+          },
+          {
+            "kode": "70209",
+            "nama": "AKTIVITAS KONSULTASI MANAJEMEN LAINNYA",
+            "halamanPdf": 686
+          }
+        ],
+        "catatan": "Konsultansi manajemen industri dipisahkan menjadi 70204; konsultasi manajemen lainnya tetap 70209. Jasa menjalankan kampanye iklan bukan sekadar konsultasi manajemen.",
+        "sumberKbli": "https://ppid.bps.go.id/upload/doc/Klasifikasi_Baku_Lapangan_Usaha_Indonesia_2020_1718251770.pdf",
+        "halamanNorma": 318
+      }
     },
     {
       "kluKode": "69100",
@@ -586,12 +778,47 @@
           "url": "https://www.pajak.go.id/sites/default/files/2019-06/Lampiran%201_PER_17_PJ_2015.pdf",
           "statusVerifikasi": "TERVERIFIKASI"
         }
-      ]
+      ],
+      "pemetaanKbli2020": {
+        "metode": "PENCOCOKAN_URAIAN_DAN_TABEL_BPS",
+        "tanggalPemeriksaan": "2026-09-06",
+        "hubungan": "BEBERAPA_PADANAN",
+        "padanan": [
+          {
+            "kode": "69101",
+            "nama": "AKTIVITAS PENGACARA",
+            "halamanPdf": 683
+          },
+          {
+            "kode": "69102",
+            "nama": "AKTIVITAS KONSULTAN HUKUM",
+            "halamanPdf": 683
+          },
+          {
+            "kode": "69103",
+            "nama": "AKTIVITAS KONSULTAN KEKAYAAN INTELEKTUAL",
+            "halamanPdf": 683
+          },
+          {
+            "kode": "69104",
+            "nama": "AKTIVITAS NOTARIS DAN PEJABAT PEMBUAT AKTA TANAH",
+            "halamanPdf": 683
+          },
+          {
+            "kode": "69109",
+            "nama": "AKTIVITAS HUKUM LAINNYA",
+            "halamanPdf": 683
+          }
+        ],
+        "catatan": "Jasa hukum terurai menjadi pengacara, konsultan hukum, konsultan kekayaan intelektual, notaris/PPAT, dan aktivitas hukum lainnya.",
+        "sumberKbli": "https://ppid.bps.go.id/upload/doc/Klasifikasi_Baku_Lapangan_Usaha_Indonesia_2020_1718251770.pdf",
+        "halamanNorma": 317
+      }
     },
     {
       "kluKode": "69200",
       "nama": "Akuntansi, pembukuan, dan konsultan pajak",
-      "uraianLampiran": "JASA AKUNTANSI, PEMBUKUAN DAN PEMERIKSA; KONSULTASI PAJAK505050121569200JASA AKUNTANSI, PEMBUKUAN DAN PEMERIKSA; KONSULTASI PAJAK",
+      "uraianLampiran": "JASA AKUNTANSI, PEMBUKUAN DAN PEMERIKSA; KONSULTASI PAJAK",
       "alias": [
         "akuntan",
         "konsultan pajak",
@@ -622,7 +849,27 @@
           "url": "https://www.pajak.go.id/sites/default/files/2019-06/Lampiran%201_PER_17_PJ_2015.pdf",
           "statusVerifikasi": "TERVERIFIKASI"
         }
-      ]
+      ],
+      "pemetaanKbli2020": {
+        "metode": "PENCOCOKAN_URAIAN_DAN_TABEL_BPS",
+        "tanggalPemeriksaan": "2026-09-06",
+        "hubungan": "BEBERAPA_PADANAN",
+        "padanan": [
+          {
+            "kode": "69201",
+            "nama": "AKTIVITAS AKUNTANSI, PEMBUKUAN DAN PEMERIKSA",
+            "halamanPdf": 684
+          },
+          {
+            "kode": "69202",
+            "nama": "AKTIVITAS KONSULTASI PAJAK",
+            "halamanPdf": 684
+          }
+        ],
+        "catatan": "Akuntansi, pembukuan dan pemeriksaan berpadanan dengan 69201; konsultasi pajak dengan 69202.",
+        "sumberKbli": "https://ppid.bps.go.id/upload/doc/Klasifikasi_Baku_Lapangan_Usaha_Indonesia_2020_1718251770.pdf",
+        "halamanNorma": 317
+      }
     },
     {
       "kluKode": "86201",
@@ -656,16 +903,32 @@
           "url": "https://www.pajak.go.id/sites/default/files/2019-06/Lampiran%201_PER_17_PJ_2015.pdf",
           "statusVerifikasi": "TERVERIFIKASI"
         }
-      ]
+      ],
+      "pemetaanKbli2020": {
+        "metode": "PENCOCOKAN_URAIAN_DAN_TABEL_BPS",
+        "tanggalPemeriksaan": "2026-09-06",
+        "hubungan": "SATU_PADANAN",
+        "padanan": [
+          {
+            "kode": "86201",
+            "nama": "AKTIVITAS PRAKTIK DOKTER",
+            "halamanPdf": 778
+          }
+        ],
+        "catatan": "Untuk praktik dokter yang berdiri sendiri. Rumah sakit, klinik, dan praktik dokter gigi mempunyai kelompok tersendiri.",
+        "sumberKbli": "https://ppid.bps.go.id/upload/doc/Klasifikasi_Baku_Lapangan_Usaha_Indonesia_2020_1718251770.pdf",
+        "halamanNorma": 353
+      }
     },
     {
       "kluKode": "86202",
-      "nama": "Praktik dokter spesialis",
+      "nama": "Praktik dokter spesialis (selain dokter gigi)",
       "uraianLampiran": "PRAKTIK DOKTER SPESIALIS",
       "alias": [
         "dokter spesialis",
-        "spesialis",
-        "dokter gigi spesialis"
+        "spesialis mata",
+        "spesialis THT",
+        "spesialis penyakit dalam"
       ],
       "bentukKegiatan": "PEKERJAAN_BEBAS",
       "pekerjaanBebas": "YA",
@@ -690,12 +953,27 @@
           "url": "https://www.pajak.go.id/sites/default/files/2019-06/Lampiran%201_PER_17_PJ_2015.pdf",
           "statusVerifikasi": "TERVERIFIKASI"
         }
-      ]
+      ],
+      "pemetaanKbli2020": {
+        "metode": "PENCOCOKAN_URAIAN_DAN_TABEL_BPS",
+        "tanggalPemeriksaan": "2026-09-06",
+        "hubungan": "SATU_PADANAN",
+        "padanan": [
+          {
+            "kode": "86202",
+            "nama": "AKTIVITAS PRAKTIK DOKTER SPESIALIS",
+            "halamanPdf": 779
+          }
+        ],
+        "catatan": "Untuk praktik dokter spesialis yang berdiri sendiri. Praktik dokter gigi, termasuk dokter gigi spesialis, berada pada 86203 dan tidak diwakili pilihan ini.",
+        "sumberKbli": "https://ppid.bps.go.id/upload/doc/Klasifikasi_Baku_Lapangan_Usaha_Indonesia_2020_1718251770.pdf",
+        "halamanNorma": 353
+      }
     },
     {
       "kluKode": "71100",
       "nama": "Arsitektur dan teknik sipil",
-      "uraianLampiran": "JASA ARSITEKUR DAN TEKNIK SIPIL SERTA KONSULTASI TEKNIS YANGBERHUBUNGAN DENGAN ITU",
+      "uraianLampiran": "JASA ARSITEKUR DAN TEKNIK SIPIL SERTA KONSULTASI TEKNIS YANG BERHUBUNGAN DENGAN ITU",
       "alias": [
         "arsitek",
         "insinyur",
@@ -726,21 +1004,37 @@
           "url": "https://www.pajak.go.id/sites/default/files/2019-06/Lampiran%201_PER_17_PJ_2015.pdf",
           "statusVerifikasi": "TERVERIFIKASI"
         }
-      ]
+      ],
+      "pemetaanKbli2020": {
+        "metode": "PENCOCOKAN_URAIAN_DAN_TABEL_BPS",
+        "tanggalPemeriksaan": "2026-09-06",
+        "hubungan": "BEBERAPA_PADANAN",
+        "padanan": [
+          {
+            "kode": "71101",
+            "nama": "AKTIVITAS ARSITEKTUR",
+            "halamanPdf": 687
+          },
+          {
+            "kode": "71102",
+            "nama": "AKTIVITAS KEINSINYURAN DAN KONSULTASI TEKNIS YBDI",
+            "halamanPdf": 688
+          }
+        ],
+        "catatan": "Arsitektur berpadanan dengan 71101; keinsinyuran dan konsultasi teknis dengan 71102. Desain interior mempunyai kelompok berbeda.",
+        "sumberKbli": "https://ppid.bps.go.id/upload/doc/Klasifikasi_Baku_Lapangan_Usaha_Indonesia_2020_1718251770.pdf",
+        "halamanNorma": 319
+      }
     },
     {
       "kluKode": "85499",
-      "nama": "Pengajar lepas, bimbingan belajar, dan pelatihan",
+      "nama": "Pendidikan lainnya swasta (misalnya public speaking)",
       "uraianLampiran": "JASA PENDIDIKAN LAINNYA SWASTA",
       "alias": [
-        "guru les",
-        "tutor privat",
-        "pengajar mandiri",
-        "trainer freelance",
-        "instruktur kursus",
-        "penceramah",
-        "moderator",
-        "bimbingan belajar"
+        "pelatihan public speaking",
+        "pelatihan keselamatan",
+        "pelatihan jurnalistik",
+        "kursus ujian profesional"
       ],
       "bentukKegiatan": "PEKERJAAN_BEBAS",
       "pekerjaanBebas": "YA",
@@ -765,21 +1059,51 @@
           "url": "https://www.pajak.go.id/sites/default/files/2019-06/Lampiran%201_PER_17_PJ_2015.pdf",
           "statusVerifikasi": "TERVERIFIKASI"
         }
-      ]
+      ],
+      "pemetaanKbli2020": {
+        "metode": "PENCOCOKAN_URAIAN_DAN_TABEL_BPS",
+        "tanggalPemeriksaan": "2026-09-06",
+        "hubungan": "BEBERAPA_PADANAN",
+        "padanan": [
+          {
+            "kode": "85440",
+            "nama": "SATUAN PENDIDIKAN KERJASAMA PENDIDIKAN NONFORMAL",
+            "halamanPdf": 770
+          },
+          {
+            "kode": "85451",
+            "nama": "PENDIDIKAN PESANTREN LAINNYA",
+            "halamanPdf": 770
+          },
+          {
+            "kode": "85452",
+            "nama": "PENDIDIKAN KEAGAMAAN ISLAM NON FORMAL",
+            "halamanPdf": 770
+          },
+          {
+            "kode": "85459",
+            "nama": "PENDIDIKAN KEAGAMAAN LAINNYA YTDL",
+            "halamanPdf": 770
+          },
+          {
+            "kode": "85499",
+            "nama": "PENDIDIKAN LAINNYA SWASTA",
+            "halamanPdf": 773
+          }
+        ],
+        "catatan": "Tabel BPS memecah kelompok pendidikan lainnya swasta ke beberapa kode. Rincian baru dapat menggabungkan bagian kegiatan lain; tidak semuanya otomatis memakai baris Norma ini. Bimbingan belajar adalah 85495, kursus bahasa 85493, dan kursus komputer 85492. Pilihan aplikasi ini dibatasi pada pendidikan lainnya, misalnya pelatihan public speaking.",
+        "sumberKbli": "https://ppid.bps.go.id/upload/doc/Klasifikasi_Baku_Lapangan_Usaha_Indonesia_2020_1718251770.pdf",
+        "halamanNorma": 351
+      }
     },
     {
       "kluKode": "47919",
-      "nama": "Perdagangan eceran melalui media daring (toko online)",
-      "uraianLampiran": "PERDAGANGAN ECERAN MELALUI MEDIA UNTUK BERBAGAI MACAM BARANGLAINNYA",
+      "nama": "Perdagangan daring berbagai barang lainnya",
+      "uraianLampiran": "PERDAGANGAN ECERAN MELALUI MEDIA UNTUK BERBAGAI MACAM BARANG LAINNYA",
       "alias": [
-        "toko online",
-        "olshop",
-        "seller shopee",
-        "seller tokopedia",
-        "seller tiktok shop",
-        "dropshipper",
-        "reseller online",
-        "e-commerce"
+        "perdagangan melalui media",
+        "berbagai barang lainnya",
+        "pesanan melalui internet"
       ],
       "bentukKegiatan": "USAHA_DAGANG",
       "pekerjaanBebas": "TIDAK",
@@ -804,7 +1128,22 @@
           "url": "https://www.pajak.go.id/sites/default/files/2019-06/Lampiran%201_PER_17_PJ_2015.pdf",
           "statusVerifikasi": "TERVERIFIKASI"
         }
-      ]
+      ],
+      "pemetaanKbli2020": {
+        "metode": "PENCOCOKAN_URAIAN_DAN_TABEL_BPS",
+        "tanggalPemeriksaan": "2026-09-06",
+        "hubungan": "SATU_PADANAN",
+        "padanan": [
+          {
+            "kode": "47919",
+            "nama": "PERDAGANGAN ECERAN MELALUI MEDIA UNTUK BERBAGAI MACAM BARANG LAINNYA",
+            "halamanPdf": 570
+          }
+        ],
+        "catatan": "Hanya perdagangan melalui media untuk berbagai barang lainnya. Barang tertentu mempunyai rincian 47911–47914; sebutan toko online, reseller, atau marketplace saja belum menentukan kelompoknya.",
+        "sumberKbli": "https://ppid.bps.go.id/upload/doc/Klasifikasi_Baku_Lapangan_Usaha_Indonesia_2020_1718251770.pdf",
+        "halamanNorma": 263
+      }
     },
     {
       "kluKode": "47711",
@@ -840,18 +1179,32 @@
           "url": "https://www.pajak.go.id/sites/default/files/2019-06/Lampiran%201_PER_17_PJ_2015.pdf",
           "statusVerifikasi": "TERVERIFIKASI"
         }
-      ]
+      ],
+      "pemetaanKbli2020": {
+        "metode": "PENCOCOKAN_URAIAN_DAN_TABEL_BPS",
+        "tanggalPemeriksaan": "2026-09-06",
+        "hubungan": "SATU_PADANAN",
+        "padanan": [
+          {
+            "kode": "47711",
+            "nama": "PERDAGANGAN ECERAN PAKAIAN",
+            "halamanPdf": 547
+          }
+        ],
+        "catatan": "Perdagangan eceran khusus pakaian. Penjualan melalui media dan pembuatan pakaian mempunyai kelompok berbeda.",
+        "sumberKbli": "https://ppid.bps.go.id/upload/doc/Klasifikasi_Baku_Lapangan_Usaha_Indonesia_2020_1718251770.pdf",
+        "halamanNorma": 226
+      }
     },
     {
       "kluKode": "47111",
-      "nama": "Minimarket dan perdagangan eceran sembako",
-      "uraianLampiran": "PERDAGANGAN ECERAN BERBAGAI MACAM BARANG YANG UTAMANYAMAKANAN, MINUMAN ATAU TEMBAKAU DI SUPERMARKET/MINIMARKET",
+      "nama": "Minimarket, supermarket, dan hypermarket",
+      "uraianLampiran": "PERDAGANGAN ECERAN BERBAGAI MACAM BARANG YANG UTAMANYA MAKANAN, MINUMAN ATAU TEMBAKAU DI SUPERMARKET/MINIMARKET",
       "alias": [
-        "warung kelontong",
-        "toko sembako",
-        "toko kelontong",
         "minimarket",
-        "agen sembako"
+        "supermarket",
+        "hypermarket",
+        "toko swalayan"
       ],
       "bentukKegiatan": "USAHA_DAGANG",
       "pekerjaanBebas": "TIDAK",
@@ -876,19 +1229,30 @@
           "url": "https://www.pajak.go.id/sites/default/files/2019-06/Lampiran%201_PER_17_PJ_2015.pdf",
           "statusVerifikasi": "TERVERIFIKASI"
         }
-      ]
+      ],
+      "pemetaanKbli2020": {
+        "metode": "PENCOCOKAN_URAIAN_DAN_TABEL_BPS",
+        "tanggalPemeriksaan": "2026-09-06",
+        "hubungan": "SATU_PADANAN",
+        "padanan": [
+          {
+            "kode": "47111",
+            "nama": "PERDAGANGAN ECERAN BERBAGAI MACAM BARANG YANG UTAMANYA MAKANAN, MINUMAN ATAU TEMBAKAU DI MINIMARKET/SUPERMARKET/HYPERMARKET",
+            "halamanPdf": 535
+          }
+        ],
+        "catatan": "Untuk perdagangan swalayan di minimarket/supermarket/hypermarket. Warung kelontong dan toko sembako tradisional masuk 47112, bukan pilihan ini.",
+        "sumberKbli": "https://ppid.bps.go.id/upload/doc/Klasifikasi_Baku_Lapangan_Usaha_Indonesia_2020_1718251770.pdf",
+        "halamanNorma": 215
+      }
     },
     {
       "kluKode": "56101",
-      "nama": "Restoran, rumah makan, dan kafe",
+      "nama": "Restoran",
       "uraianLampiran": "RESTORAN",
       "alias": [
-        "kafe",
         "restoran",
-        "warung makan",
-        "katering",
-        "kedai kopi",
-        "usaha kuliner"
+        "layanan memasak dan menyajikan sesuai pesanan"
       ],
       "bentukKegiatan": "USAHA_JASA",
       "pekerjaanBebas": "TIDAK",
@@ -913,7 +1277,27 @@
           "url": "https://www.pajak.go.id/sites/default/files/2019-06/Lampiran%201_PER_17_PJ_2015.pdf",
           "statusVerifikasi": "TERVERIFIKASI"
         }
-      ]
+      ],
+      "pemetaanKbli2020": {
+        "metode": "PENCOCOKAN_URAIAN_DAN_TABEL_BPS",
+        "tanggalPemeriksaan": "2026-09-06",
+        "hubungan": "BEBERAPA_PADANAN",
+        "padanan": [
+          {
+            "kode": "56101",
+            "nama": "RESTORAN",
+            "halamanPdf": 609
+          },
+          {
+            "kode": "56102",
+            "nama": "RUMAH/WARUNG MAKAN",
+            "halamanPdf": 609
+          }
+        ],
+        "catatan": "Restoran lama terhubung dengan 56101 dan sebagian 56102 menurut perubahan cakupan BPS. Kode 56102 juga menerima kegiatan dari warung makan lama, sehingga tidak seluruhnya memakai Norma 56101. Kafe utama minuman adalah 56303 dan katering 56210/56290. Pilihan aplikasi dibatasi pada restoran.",
+        "sumberKbli": "https://ppid.bps.go.id/upload/doc/Klasifikasi_Baku_Lapangan_Usaha_Indonesia_2020_1718251770.pdf",
+        "halamanNorma": 287
+      }
     },
     {
       "kluKode": "96111",
@@ -948,7 +1332,22 @@
           "url": "https://www.pajak.go.id/sites/default/files/2019-06/Lampiran%201_PER_17_PJ_2015.pdf",
           "statusVerifikasi": "TERVERIFIKASI"
         }
-      ]
+      ],
+      "pemetaanKbli2020": {
+        "metode": "PENCOCOKAN_URAIAN_DAN_TABEL_BPS",
+        "tanggalPemeriksaan": "2026-09-06",
+        "hubungan": "SATU_PADANAN",
+        "padanan": [
+          {
+            "kode": "96111",
+            "nama": "AKTIVITAS PANGKAS RAMBUT",
+            "halamanPdf": 823
+          }
+        ],
+        "catatan": "Pangkas dan perawatan rambut, termasuk barbershop. Salon kecantikan mempunyai rincian 96112.",
+        "sumberKbli": "https://ppid.bps.go.id/upload/doc/Klasifikasi_Baku_Lapangan_Usaha_Indonesia_2020_1718251770.pdf",
+        "halamanNorma": 375
+      }
     },
     {
       "kluKode": "96112",
@@ -983,7 +1382,22 @@
           "url": "https://www.pajak.go.id/sites/default/files/2019-06/Lampiran%201_PER_17_PJ_2015.pdf",
           "statusVerifikasi": "TERVERIFIKASI"
         }
-      ]
+      ],
+      "pemetaanKbli2020": {
+        "metode": "PENCOCOKAN_URAIAN_DAN_TABEL_BPS",
+        "tanggalPemeriksaan": "2026-09-06",
+        "hubungan": "SATU_PADANAN",
+        "padanan": [
+          {
+            "kode": "96112",
+            "nama": "AKTIVITAS SALON KECANTIKAN",
+            "halamanPdf": 823
+          }
+        ],
+        "catatan": "Perawatan kecantikan dan rambut pada salon. Layanan medis atau klinik kecantikan tidak otomatis termasuk salon.",
+        "sumberKbli": "https://ppid.bps.go.id/upload/doc/Klasifikasi_Baku_Lapangan_Usaha_Indonesia_2020_1718251770.pdf",
+        "halamanNorma": 376
+      }
     },
     {
       "kluKode": "96200",
@@ -1019,7 +1433,22 @@
           "url": "https://www.pajak.go.id/sites/default/files/2019-06/Lampiran%201_PER_17_PJ_2015.pdf",
           "statusVerifikasi": "TERVERIFIKASI"
         }
-      ]
+      ],
+      "pemetaanKbli2020": {
+        "metode": "PENCOCOKAN_URAIAN_DAN_TABEL_BPS",
+        "tanggalPemeriksaan": "2026-09-06",
+        "hubungan": "SATU_PADANAN",
+        "padanan": [
+          {
+            "kode": "96200",
+            "nama": "AKTIVITAS PENATU",
+            "halamanPdf": 824
+          }
+        ],
+        "catatan": "Kode tetap 96200; judul berubah dari binatu menjadi penatu. Untuk jasa pencucian/perawatan tekstil sesuai uraian kegiatan.",
+        "sumberKbli": "https://ppid.bps.go.id/upload/doc/Klasifikasi_Baku_Lapangan_Usaha_Indonesia_2020_1718251770.pdf",
+        "halamanNorma": 376
+      }
     },
     {
       "kluKode": "45407",
@@ -1054,18 +1483,31 @@
           "url": "https://www.pajak.go.id/sites/default/files/2019-06/Lampiran%201_PER_17_PJ_2015.pdf",
           "statusVerifikasi": "TERVERIFIKASI"
         }
-      ]
+      ],
+      "pemetaanKbli2020": {
+        "metode": "PENCOCOKAN_URAIAN_DAN_TABEL_BPS",
+        "tanggalPemeriksaan": "2026-09-06",
+        "hubungan": "SATU_PADANAN",
+        "padanan": [
+          {
+            "kode": "45407",
+            "nama": "REPARASI DAN PERAWATAN SEPEDA MOTOR",
+            "halamanPdf": 516
+          }
+        ],
+        "catatan": "Untuk reparasi dan perawatan sepeda motor; reparasi mobil berada pada kelompok berbeda.",
+        "sumberKbli": "https://ppid.bps.go.id/upload/doc/Klasifikasi_Baku_Lapangan_Usaha_Indonesia_2020_1718251770.pdf",
+        "halamanNorma": 202
+      }
     },
     {
       "kluKode": "14111",
       "nama": "Konveksi pakaian jadi dari tekstil",
       "uraianLampiran": "INDUSTRI PAKAIAN JADI KONVEKSI DARI TEKSTIL",
       "alias": [
-        "konveksi",
-        "penjahit",
-        "tailor",
-        "jahit baju",
-        "produksi pakaian"
+        "konveksi tekstil",
+        "produksi pakaian jadi",
+        "industri pakaian"
       ],
       "bentukKegiatan": "USAHA_JASA",
       "pekerjaanBebas": "TIDAK",
@@ -1090,19 +1532,32 @@
           "url": "https://www.pajak.go.id/sites/default/files/2019-06/Lampiran%201_PER_17_PJ_2015.pdf",
           "statusVerifikasi": "TERVERIFIKASI"
         }
-      ]
+      ],
+      "pemetaanKbli2020": {
+        "metode": "PENCOCOKAN_URAIAN_DAN_TABEL_BPS",
+        "tanggalPemeriksaan": "2026-09-06",
+        "hubungan": "SATU_PADANAN",
+        "padanan": [
+          {
+            "kode": "14111",
+            "nama": "INDUSTRI PAKAIAN JADI (KONVEKSI) DARI TEKSTIL",
+            "halamanPdf": 339
+          }
+        ],
+        "catatan": "Untuk produksi pakaian jadi/konveksi dari tekstil. Penjahitan pakaian sesuai pesanan berada pada 14120 dan tidak diwakili pilihan ini.",
+        "sumberKbli": "https://ppid.bps.go.id/upload/doc/Klasifikasi_Baku_Lapangan_Usaha_Indonesia_2020_1718251770.pdf",
+        "halamanNorma": 84
+      }
     },
     {
       "kluKode": "10710",
-      "nama": "Industri produk roti dan kue",
+      "nama": "Pembuatan produk roti dan kue",
       "uraianLampiran": "INDUSTRI PRODUK ROTI DAN KUE",
       "alias": [
-        "bakery",
-        "toko roti",
-        "usaha kue",
-        "kue kering",
-        "kue basah",
-        "katering kue"
+        "produksi roti",
+        "produksi kue",
+        "pembuatan biskuit",
+        "industri bakeri"
       ],
       "bentukKegiatan": "USAHA_JASA",
       "pekerjaanBebas": "TIDAK",
@@ -1127,7 +1582,22 @@
           "url": "https://www.pajak.go.id/sites/default/files/2019-06/Lampiran%201_PER_17_PJ_2015.pdf",
           "statusVerifikasi": "TERVERIFIKASI"
         }
-      ]
+      ],
+      "pemetaanKbli2020": {
+        "metode": "PENCOCOKAN_URAIAN_DAN_TABEL_BPS",
+        "tanggalPemeriksaan": "2026-09-06",
+        "hubungan": "SATU_PADANAN",
+        "padanan": [
+          {
+            "kode": "10710",
+            "nama": "INDUSTRI PRODUK ROTI DAN KUE",
+            "halamanPdf": 320
+          }
+        ],
+        "catatan": "Untuk membuat produk roti dan kue. Toko yang hanya menjual kembali roti dan jasa katering mempunyai kegiatan berbeda.",
+        "sumberKbli": "https://ppid.bps.go.id/upload/doc/Klasifikasi_Baku_Lapangan_Usaha_Indonesia_2020_1718251770.pdf",
+        "halamanNorma": 69
+      }
     }
   ]
 }
