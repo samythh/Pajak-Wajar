@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { InputBuktiPotong } from '@/components/eligibility/InputBuktiPotong';
 import { KartuVonis } from '@/components/eligibility/KartuVonis';
 import { InputRupiah } from '@/components/ui/InputRupiah';
+import { PanelProses } from '@/components/ui/StatusProses';
 import { auditPajakMandiri } from '@/lib/index';
 import { basisAturan, daftarKlu } from '@/lib/regulasi';
 import type {
@@ -139,16 +140,24 @@ export function AlurKelayakan() {
   const [profil, setProfil] = useState(profilAwal);
   const [kreditPajak, setKreditPajak] = useState<KreditPajakItem[]>([]);
   const [hasil, setHasil] = useState<HasilAuditPajak | null>(null);
+  const [hasilSiap, setHasilSiap] = useState<HasilAuditPajak | null>(null);
   const [galat, setGalat] = useState<string | null>(null);
   const [sudahMencoba, setSudahMencoba] = useState(false);
   const [buktiBelumDisimpan, setBuktiBelumDisimpan] = useState(false);
   const container = useRef<HTMLDivElement>(null);
   const pertama = useRef(true);
   useEffect(() => {
+    if (!hasilSiap) return;
+    // Transisi presentasi singkat, bukan simulasi persentase perhitungan.
+    const durasi = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 650;
+    const timer = window.setTimeout(() => { setHasil(hasilSiap); setHasilSiap(null); }, durasi);
+    return () => window.clearTimeout(timer);
+  }, [hasilSiap]);
+  useEffect(() => {
     if (pertama.current) { pertama.current = false; return; }
     const judul = container.current?.querySelector<HTMLElement>('#judul-form, #judul-hasil');
     judul?.focus({ preventScroll: true });
-    judul?.scrollIntoView({ block: 'start', behavior: 'instant' });
+    (hasil ? container.current : judul)?.scrollIntoView({ block: 'start', behavior: 'instant' });
   }, [langkah, hasil]);
 
   const pilihanKlu = useMemo(() => daftarKlu(), []);
@@ -175,7 +184,7 @@ export function AlurKelayakan() {
     }
 
     try {
-      setHasil(auditPajakMandiri({ profil, kreditPajak }));
+      setHasilSiap(auditPajakMandiri({ profil, kreditPajak }));
       setGalat(null);
     } catch (kesalahan) {
       setGalat(
@@ -185,6 +194,12 @@ export function AlurKelayakan() {
       );
     }
   };
+
+  if (hasilSiap) {
+    return <div ref={container} className="min-w-0" aria-busy="true">
+      <PanelProses judul="Menyiapkan ringkasan Anda" keterangan="Hasil pemeriksaan, rincian angka, dan saran akan segera tampil." />
+    </div>;
+  }
 
   if (hasil) {
     return (

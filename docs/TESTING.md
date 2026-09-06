@@ -3,6 +3,7 @@
 Pemeriksaan terbaru menggantikan status pada laporan 5 September di bawah. Lingkungan: Windows, Node.js 24.19.0, Next.js 15.5.23, Vitest 3.2.7, Chromium lewat Playwright CLI.
 
 - 141 tes rutin pada 9 berkas; satu tes layanan nyata hanya berjalan lewat `npm run test:ocr` dengan API key.
+- Animasi proses: diuji di Chromium 390px untuk pemindaian OCR (respons disimulasikan agar loading terlihat), konfirmasi bukti potong, transisi ringkasan, dan konfirmasi PDF. Respons gagal tidak menampilkan centang berhasil dan input manual tetap aktif. `prefers-reduced-motion` meniadakan penundaan transisi hasil serta mengurangi animasi.
 - OCR nyata berhasil membaca gambar sintetis `tests/fixtures/contoh-bupot.png`: nomor 1.2-08.26-0000123, bruto Rp120.000.000 dan PPh Rp6.000.000.
 - Lint, pemeriksaan tipe, dan build produksi diperiksa kembali setelah perubahan.
 - `npm audit`: 0 kerentanan sesudah pembaruan Vitest dan override PostCSS/sharp.

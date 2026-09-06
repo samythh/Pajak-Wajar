@@ -1,4 +1,5 @@
 import { TombolUnduhKertasKerja } from '@/components/berkas/TombolUnduhKertasKerja';
+import { IkonStatus } from '@/components/ui/StatusProses';
 import { formatCurrency, formatPersenNorma, formatTarif } from '@/lib/format';
 import type { HasilAuditPajak, HasilSkema, IdSkema, StatusKelayakan } from '@/types/pajak';
 
@@ -98,6 +99,10 @@ function Perhitungan({ skema }: { skema: HasilSkema }) {
 export function KartuVonis({ hasil }: { hasil: HasilAuditPajak }) {
   return (
     <section className="bg-paper p-4 shadow-sheet sm:p-7" aria-labelledby="judul-hasil" aria-live="polite">
+      <div className="success-banner mb-6 flex items-center gap-4 border border-blue/15 bg-white px-4 py-4 text-blue">
+        <IkonStatus sukses besar />
+        <div><p className="font-semibold">Ringkasan Anda siap</p><p className="mt-1 text-xs leading-5 text-margin">Lihat kelayakan tiap skema dan saran di bagian akhir.</p></div>
+      </div>
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4 border-b border-line pb-5">
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-blue">Hasil pengecekan</p>

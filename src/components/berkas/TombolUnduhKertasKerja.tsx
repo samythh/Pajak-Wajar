@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { IkonStatus } from '@/components/ui/StatusProses';
 import type { HasilAuditPajak } from '@/types/pajak';
 
 /**
@@ -13,9 +14,11 @@ import type { HasilAuditPajak } from '@/types/pajak';
 export function TombolUnduhKertasKerja({ hasil }: { hasil: HasilAuditPajak }) {
   const [sedangMembuat, setSedangMembuat] = useState(false);
   const [galat, setGalat] = useState<string | null>(null);
+  const [selesai, setSelesai] = useState(false);
 
   const buatBerkas = async () => {
     setSedangMembuat(true);
+    setSelesai(false);
     setGalat(null);
     try {
       const [{ pdf }, { KertasKerjaPdf }] = await Promise.all([
@@ -30,6 +33,7 @@ export function TombolUnduhKertasKerja({ hasil }: { hasil: HasilAuditPajak }) {
       document.body.appendChild(tautan);
       tautan.click();
       document.body.removeChild(tautan);
+      setSelesai(true);
       window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
     } catch {
       setGalat('Berkas gagal dibuat di peramban ini. Coba lagi, atau salin angkanya dari layar.');
@@ -44,12 +48,14 @@ export function TombolUnduhKertasKerja({ hasil }: { hasil: HasilAuditPajak }) {
         type="button"
         onClick={buatBerkas}
         disabled={sedangMembuat}
-        className="pressable w-full border border-line bg-white px-5 py-3.5 text-sm font-semibold hover:border-blue disabled:cursor-progress disabled:opacity-60"
+        aria-busy={sedangMembuat}
+        className={`pressable relative flex w-full items-center justify-center gap-3 overflow-hidden border px-5 py-3.5 text-sm font-semibold hover:border-blue disabled:cursor-progress ${sedangMembuat ? 'busy-sheen border-blue/30 bg-blue/5 text-blue' : selesai ? 'border-blue/40 bg-blue/5 text-blue' : 'border-line bg-white'}`}
       >
+        {(sedangMembuat || selesai) && <IkonStatus key={selesai ? 'selesai' : 'proses'} sukses={selesai} />}
         {sedangMembuat ? 'Menyiapkan berkas…' : 'Simpan ringkasan sebagai PDF'}
       </button>
       <p aria-live="polite" className="mt-2 text-xs leading-5 text-margin">
-        {galat ?? 'Berkas dibuat di perangkat Anda dan tidak dikirim ke mana pun.'}
+        {galat ?? (selesai ? 'PDF siap. Permintaan unduhan telah dikirim ke browser Anda.' : sedangMembuat ? 'Menyusun halaman dan rincian pajak di perangkat Anda…' : 'Berkas dibuat di perangkat Anda dan tidak dikirim ke mana pun.')}
       </p>
     </div>
   );

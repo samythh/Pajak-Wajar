@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { InputRupiah } from '@/components/ui/InputRupiah';
+import { IkonStatus, PanelProses } from '@/components/ui/StatusProses';
 import { formatCurrency } from '@/lib/format';
 import { GalatBerkas, GalatPersetujuan, bacaBupotDenganPersetujuan } from '@/lib/ocr';
 import type { KreditPajakItem } from '@/types/pajak';
@@ -36,6 +37,7 @@ export function InputBuktiPotong({
   const [setujuKirimFoto, setSetujuKirimFoto] = useState(false);
   const [sedangMembaca, setSedangMembaca] = useState(false);
   const [pesan, setPesan] = useState<string | null>(null);
+  const [konfirmasi, setKonfirmasi] = useState<string | null>(null);
   const inputBerkas = useRef<HTMLInputElement>(null);
   const permintaan = useRef<AbortController | null>(null);
   const adaIsian = Boolean(isian.nomorBuktiPotong || isian.pemotong || isian.penghasilanBruto !== undefined || isian.pphDipotong !== undefined);
@@ -45,6 +47,7 @@ export function InputBuktiPotong({
   const total = daftar.reduce((jumlah, item) => jumlah + item.pphDipotong, 0);
 
   const tambah = () => {
+    setKonfirmasi(null);
     const pphDipotong = isian.pphDipotong ?? 0;
     if (pphDipotong <= 0) {
       setPesan('Isi jumlah pajak yang sudah dipotong terlebih dahulu.');
@@ -70,10 +73,13 @@ export function InputBuktiPotong({
     setIsian(kosong);
     setSumber('MANUAL');
     setPesan(null);
+    setKonfirmasi('Bukti potong berhasil ditambahkan');
   };
 
   const hapus = (indeks: number) => {
     onChange(daftar.filter((_, posisi) => posisi !== indeks));
+    setPesan(null);
+    setKonfirmasi('Bukti potong dihapus. Total diperbarui.');
   };
 
   const bacaFoto = async (file: File) => {
@@ -82,6 +88,7 @@ export function InputBuktiPotong({
     permintaan.current = controller;
     const batasWaktu = window.setTimeout(() => controller.abort(), 50_000);
     setSedangMembaca(true);
+    setKonfirmasi(null);
     setPesan(null);
     try {
       const hasil = await bacaBupotDenganPersetujuan(file, setujuKirimFoto, controller.signal);
@@ -93,6 +100,7 @@ export function InputBuktiPotong({
         pphDipotong: hasil.pphDipotong
       });
       setSumber('OCR');
+      setKonfirmasi('Foto selesai dibaca');
       setPesan('Angka sudah diisi dari foto. Periksa dan perbaiki bila ada yang salah baca.');
     } catch (kesalahan) {
       if (controller.signal.aborted) {
@@ -128,7 +136,7 @@ export function InputBuktiPotong({
           {daftar.map((item, indeks) => (
             <li
               key={`${item.nomorBuktiPotong}-${indeks}`}
-              className="flex items-start justify-between gap-4 border border-line bg-white px-4 py-3 text-sm"
+              className="motion-receipt flex items-start justify-between gap-4 border border-line bg-white px-4 py-3 text-sm"
             >
               <span>
                 <strong className="block font-semibold">
@@ -200,7 +208,7 @@ export function InputBuktiPotong({
       >
         Tambahkan bukti potong
       </button>
-      {adaIsian && <button type="button" className="ml-3 min-h-11 text-xs font-semibold underline" onClick={() => { permintaan.current?.abort(); setIsian(kosong); setSumber('MANUAL'); setPesan(null); }}>Kosongkan isian</button>}
+      {adaIsian && <button type="button" className="ml-3 min-h-11 text-xs font-semibold underline" onClick={() => { permintaan.current?.abort(); setIsian(kosong); setSumber('MANUAL'); setPesan(null); setKonfirmasi(null); }}>Kosongkan isian</button>}
 
       <details className="detail-panel border border-line bg-paper/70 p-4">
         <summary className="cursor-pointer list-none text-sm font-semibold">
@@ -236,13 +244,14 @@ export function InputBuktiPotong({
             }}
             className="block w-full text-xs file:mr-3 file:border file:border-line file:bg-white file:px-4 file:py-2 file:text-xs file:font-semibold disabled:opacity-50"
           />
-          {sedangMembaca && <p className="font-semibold text-blue">Membaca foto…</p>}
+          {sedangMembaca && <PanelProses judul="Membaca foto…" keterangan="Tunggu sebentar. Setelah selesai, periksa angka yang terisi sebelum menambahkannya." />}
         </div>
       </details>
 
-      <p aria-live="polite" className="text-xs leading-5 text-margin">
-        {pesan ?? `Total pajak yang sudah dipotong: ${formatCurrency(total)}`}
-      </p>
+      <div aria-live="polite" className="text-xs leading-5 text-margin">
+        {konfirmasi && <div key={`${konfirmasi}-${daftar.length}`} className="success-banner mb-2 flex items-center gap-3 border border-blue/20 bg-blue/5 px-4 py-3 text-blue"><IkonStatus sukses /><strong>{konfirmasi}</strong></div>}
+        <p>{pesan ?? `Total pajak yang sudah dipotong: ${formatCurrency(total)}`}</p>
+      </div>
     </div>
   );
 }
