@@ -72,9 +72,9 @@ describe('gerbang persetujuan di klien', () => {
     expect(() => periksaBerkasBupot(berkas('image/gif'))).toThrowError(/JPG, PNG, atau WebP/);
   });
 
-  it('menolak berkas yang melebihi 4 MB', () => {
+  it('menolak berkas yang melebihi 3 MB', () => {
     expect(() => periksaBerkasBupot(berkas('image/png', 5 * 1024 * 1024))).toThrowError(
-      /melebihi 4 MB/
+      /melebihi 3 MB/
     );
   });
 
@@ -147,7 +147,36 @@ describe('route /api/ocr-bupot', () => {
   afterEach(() => {
     if (kunciAsli === undefined) delete process.env.GEMINI_API_KEY;
     else process.env.GEMINI_API_KEY = kunciAsli;
+    vi.unstubAllEnvs();
     vi.unstubAllGlobals();
+  });
+
+  it.each(['', 'gemini-2.5-flash'])('konfigurasi lama atau kosong %s memakai model yang tersedia', async (model) => {
+    vi.stubEnv('GEMINI_MODEL', model);
+    const fetchPalsu = vi.fn().mockResolvedValue(jawabanGemini(BUPOT_BENAR));
+    vi.stubGlobal('fetch', fetchPalsu);
+    const res = await POST(permintaan({ persetujuan: true, mimeType: 'image/png', dataBase64: GAMBAR_1x1 }));
+    expect(res.status).toBe(200);
+    expect(fetchPalsu.mock.calls[0][0]).toContain('/gemini-3.6-flash:generateContent');
+    expect(fetchPalsu.mock.calls[0][1].signal).toBeInstanceOf(AbortSignal);
+  });
+
+  it('menolak base64 rusak sebelum menghubungi layanan', async () => {
+    const fetchPalsu = vi.fn();
+    vi.stubGlobal('fetch', fetchPalsu);
+    const res = await POST(permintaan({ persetujuan: true, mimeType: 'image/png', dataBase64: 'bukan gambar!' }));
+    expect(res.status).toBe(400);
+    expect(fetchPalsu).not.toHaveBeenCalled();
+  });
+
+  it('jawaban kandidat null menghasilkan pesan terbaca, bukan crash', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(JSON.stringify({ candidates: [null] }))));
+    const res = await POST(permintaan({ persetujuan: true, mimeType: 'image/png', dataBase64: GAMBAR_1x1 }));
+    expect(res.status).toBe(422);
+  });
+
+  it('menolak file kosong di perangkat pengguna', () => {
+    expect(() => periksaBerkasBupot(berkas('image/png', 0))).toThrow(/kosong/);
   });
 
   it('menjawab 503 dan mengarahkan ke input manual bila kunci API belum diisi', async () => {
@@ -262,7 +291,7 @@ describe('route /api/ocr-bupot', () => {
  * Gambar yang dikirim adalah `tests/fixtures/contoh-bupot.png`, sebuah lembar
  * latihan berisi data karangan yang diberi cap CONTOH.
  */
-const adaKunci = Boolean(process.env.GEMINI_API_KEY);
+const adaKunci = Boolean(process.env.GEMINI_API_KEY) && process.env.npm_lifecycle_event === 'test:ocr';
 
 describe.skipIf(!adaKunci)('pembacaan nyata oleh layanan Gemini', () => {
   it(

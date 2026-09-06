@@ -24,7 +24,8 @@ const dasar: ProfilWajibPajak = {
   omzetSeluruhPerseroanPeroranganThnSebelumnya: 0,
   sudahMemberitahukanNppn: true,
   pernahPilihTarifUmum: false,
-  jugaPegawaiTetap: false
+  jugaPegawaiTetap: false,
+  pernahMelewatiAmbang: false
 };
 
 /** Kreator konten: pekerjaan bebas, sehingga PPh Final tertutup. */
@@ -35,7 +36,7 @@ export const profilPedagang: ProfilWajibPajak = {
   ...dasar,
   kluKode: '47919',
   bentukKegiatan: 'USAHA_DAGANG',
-  statusPtkp: 'K/1',
+  statusPtkp: 'TK/0',
   omzetPribadiTahunPajak: 900_000_000,
   biayaOperasionalRiil: 620_000_000,
   omzetPribadiThnSebelumnya: 780_000_000

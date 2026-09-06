@@ -15,7 +15,8 @@ const profil = {
   omzetSeluruhPerseroanPeroranganThnSebelumnya: 0,
   sudahMemberitahukanNppn: 'tidak_yakin',
   pernahPilihTarifUmum: false,
-  jugaPegawaiTetap: false
+  jugaPegawaiTetap: false,
+  pernahMelewatiAmbang: false
 };
 
 describe('validasi profil wajib pajak', () => {

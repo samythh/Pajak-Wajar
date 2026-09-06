@@ -79,6 +79,10 @@ export type ProfilWajibPajak = {
   sudahMemberitahukanNppn: JawabanKepatuhan;
   pernahPilihTarifUmum: JawabanKepatuhan;
   jugaPegawaiTetap: boolean;
+  /** Neto gaji setahun dari bukti potong pegawai, sebelum pengurangan PTKP. */
+  penghasilanNetoPegawai?: number;
+  /** Riwayat ambang untuk tahun sebelum tahun pembanding; kosong berarti belum pasti. */
+  pernahMelewatiAmbang?: JawabanKepatuhan;
 };
 
 export type KreditPajakItem = {
@@ -124,11 +128,14 @@ export type RincianNppn = {
   omzetPribadi: number;
   persenNorma: number;
   penghasilanNeto: number;
+  penghasilanNetoUsaha: number;
+  penghasilanNetoPegawai: number;
   ptkp: number;
   pkp: number;
   pajakSebelumKredit: number;
   kreditBupot: number;
   pajakTerutang: number;
+  kelebihanKredit: number;
   lapisanTerpakai: LapisanTerpakai[];
 };
 
@@ -137,11 +144,14 @@ export type RincianTarifUmum = {
   omzetPribadi: number;
   biayaOperasional: number;
   penghasilanNeto: number;
+  penghasilanNetoUsaha: number;
+  penghasilanNetoPegawai: number;
   ptkp: number;
   pkp: number;
   pajakSebelumKredit: number;
   kreditBupot: number;
   pajakTerutang: number;
+  kelebihanKredit: number;
   lapisanTerpakai: LapisanTerpakai[];
 };
 

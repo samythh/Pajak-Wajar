@@ -22,19 +22,19 @@ export default function CekKelayakanPage() {
           <span className="grid h-9 w-9 place-items-center bg-blue font-display text-xl font-semibold text-white" aria-hidden="true">P</span>
           <span className="font-display text-xl font-semibold tracking-tight">PajakWajar</span>
         </Link>
-        <span className="flex items-center gap-2 text-xs font-semibold text-margin"><span className="h-2 w-2 rounded-full bg-blue" aria-hidden="true" />Diproses di perangkat Anda</span>
+        <span className="flex items-center gap-2 text-[10px] font-semibold text-margin sm:text-xs"><span className="h-2 w-2 rounded-full bg-blue" aria-hidden="true" />Data formulir tetap lokal</span>
       </div>
     </header>
 
     <section className="motion-page mx-auto max-w-7xl px-5 pb-16 pt-10 sm:px-8 sm:pt-16 lg:grid lg:grid-cols-[0.78fr_1.22fr] lg:gap-16 lg:pb-24">
       <div className="mb-10 lg:sticky lg:top-10 lg:mb-0 lg:self-start">
         <p className="mb-4 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-blue"><span className="h-px w-8 bg-blue" aria-hidden="true" /> Cek sebelum lapor pajak</p>
-        <h1 className="max-w-xl font-display text-[2.75rem] font-medium leading-[1.04] tracking-[-0.035em] sm:text-6xl">Cari tahu cara hitung pajak yang boleh kamu pakai.</h1>
-        <p className="mt-6 max-w-lg text-base leading-7 text-margin sm:text-lg sm:leading-8">Cukup jawab pertanyaan tentang pekerjaan dan penghasilan. Istilah pajak akan kami jelaskan saat muncul.</p>
-        <ol className="mt-10 grid grid-cols-2 gap-x-4 gap-y-5 border-t border-line pt-6 text-sm lg:grid-cols-1" aria-label="Urutan proses PajakWajar">
+        <h1 className="max-w-xl font-display text-3xl font-medium leading-[1.1] tracking-[-0.035em] sm:text-5xl lg:text-6xl">Cari tahu cara hitung pajak yang boleh Anda pakai.</h1>
+        <p className="mt-4 max-w-lg text-sm leading-6 text-margin sm:text-lg sm:leading-8">Isi enam langkah singkat tentang pekerjaan dan penghasilan. Istilah pajak dijelaskan saat muncul.</p>
+        <ol className="mt-10 hidden gap-x-4 gap-y-5 border-t border-line pt-6 text-sm lg:grid lg:grid-cols-1" aria-label="Urutan proses PajakWajar">
           {tahapan.map(([nomor, judul, keterangan]) => <li key={nomor} className="flex gap-4"><span className="font-mono text-xs text-margin">{nomor}</span><span><strong className="block font-semibold">{judul}</strong><span className="mt-0.5 hidden text-xs text-margin sm:block">{keterangan}</span></span></li>)}
         </ol>
-        <div className="mt-10 border-l-2 border-blue pl-4 text-xs leading-5 text-margin">Jawaban diproses langsung di HP atau laptop Anda dan tidak disimpan di server.</div>
+        <div className="mt-5 border-l-2 border-blue lg:mt-10 pl-4 text-xs leading-5 text-margin">Tanpa akun. Jawaban tidak disimpan setelah halaman dimuat ulang. Foto hanya dikirim jika Anda menyetujui OCR.</div>
       </div>
       <AlurKelayakan />
     </section>

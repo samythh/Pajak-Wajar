@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { InputBuktiPotong } from '@/components/eligibility/InputBuktiPotong';
 import { KartuVonis } from '@/components/eligibility/KartuVonis';
 import { InputRupiah } from '@/components/ui/InputRupiah';
@@ -33,7 +33,8 @@ const profilAwal: ProfilWajibPajak = {
   omzetSeluruhPerseroanPeroranganThnSebelumnya: 0,
   sudahMemberitahukanNppn: 'tidak_yakin',
   pernahPilihTarifUmum: 'tidak_yakin',
-  jugaPegawaiTetap: false
+  jugaPegawaiTetap: false,
+  pernahMelewatiAmbang: 'tidak_yakin'
 };
 
 const pilihanPtkp: Array<{ nilai: StatusPtkp; label: string }> = [
@@ -140,6 +141,15 @@ export function AlurKelayakan() {
   const [hasil, setHasil] = useState<HasilAuditPajak | null>(null);
   const [galat, setGalat] = useState<string | null>(null);
   const [sudahMencoba, setSudahMencoba] = useState(false);
+  const [buktiBelumDisimpan, setBuktiBelumDisimpan] = useState(false);
+  const container = useRef<HTMLDivElement>(null);
+  const pertama = useRef(true);
+  useEffect(() => {
+    if (pertama.current) { pertama.current = false; return; }
+    const judul = container.current?.querySelector<HTMLElement>('#judul-form, #judul-hasil');
+    judul?.focus({ preventScroll: true });
+    judul?.scrollIntoView({ block: 'start', behavior: 'instant' });
+  }, [langkah, hasil]);
 
   const pilihanKlu = useMemo(() => daftarKlu(), []);
 
@@ -149,6 +159,11 @@ export function AlurKelayakan() {
   const langkahValid = langkah !== 1 || Boolean(profil.kluKode);
 
   const lanjut = () => {
+    setGalat(null);
+    if (langkah === 5 && buktiBelumDisimpan) {
+      setGalat('Ada bukti potong yang belum ditambahkan atau masih dibaca. Tekan “Tambahkan bukti potong” atau “Kosongkan isian” sebelum melihat hasil.');
+      return;
+    }
     setSudahMencoba(true);
     if (!langkahValid) return;
     setSudahMencoba(false);
@@ -173,7 +188,7 @@ export function AlurKelayakan() {
 
   if (hasil) {
     return (
-      <div className="motion-result space-y-5">
+      <div ref={container} className="motion-result min-w-0 space-y-5">
         <KartuVonis hasil={hasil} />
         <button
           type="button"
@@ -187,14 +202,14 @@ export function AlurKelayakan() {
   }
 
   return (
-    <section className="overflow-hidden bg-white shadow-sheet" aria-labelledby="judul-form">
+    <div ref={container} className="min-w-0"><section className="overflow-hidden bg-white shadow-sheet" aria-labelledby="judul-form">
       <div className="border-b border-line px-5 py-5 sm:px-8 sm:py-6">
         <div className="flex items-end justify-between gap-5">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-margin">
               Langkah {langkah + 1} dari {jumlahLangkah}
             </p>
-            <h2 id="judul-form" className="mt-1 font-display text-2xl font-semibold">
+            <h2 id="judul-form" tabIndex={-1} className="mt-1 font-display text-2xl font-semibold outline-none">
               {judulLangkah[langkah]}
             </h2>
           </div>
@@ -239,6 +254,7 @@ export function AlurKelayakan() {
             <div className="mt-7 border-l-2 border-pending bg-paper px-4 py-3 text-xs leading-5 text-margin">
               <strong className="text-ink">Kenapa ditanyakan?</strong> Aturan berubah pada 22 April 2026 lewat
               PP 20/2026, dan tahun pajak 2025 punya ketentuan peralihan sendiri.
+              {profil.tahunPajak === 2025 && <p className="mt-2 font-semibold">Nominal PPh Final 2025 tidak ditampilkan karena perlu pemeriksaan aturan historis. Perkiraan NPPN dan tarif umum tetap tersedia sesuai kelengkapan data.</p>}
             </div>
           </fieldset>
         )}
@@ -357,7 +373,7 @@ export function AlurKelayakan() {
               </span>
               <select
                 value={profil.statusPtkp}
-                onChange={(e) => ubah('statusPtkp', e.target.value as StatusPtkp)}
+                onChange={(e) => { const nilai = e.target.value as StatusPtkp; ubah('statusPtkp', nilai); if (nilai.startsWith('K/') && profil.statusPerpajakanPasangan === 'TIDAK_ADA_PASANGAN') ubah('statusPerpajakanPasangan', 'TIDAK_YAKIN'); }}
                 className="w-full border border-line bg-white p-3.5 outline-none focus:border-blue"
               >
                 {pilihanPtkp.map((pilihan) => (
@@ -397,6 +413,7 @@ export function AlurKelayakan() {
                 </span>
               </span>
             </label>
+            {profil.jugaPegawaiTetap && <InputRupiah label="Penghasilan neto gaji setahun" nilai={profil.penghasilanNetoPegawai} onChange={(nilai) => ubah('penghasilanNetoPegawai', nilai)} bolehKosong bantuan="Salin penghasilan neto dari bukti potong pegawai (A1/A2), sebelum PTKP. Jumlahkan bila ada beberapa pemberi kerja. Jangan isi gaji bruto. Kredit PPh 21 diisi pada langkah bukti potong." />}
           </div>
         )}
 
@@ -462,8 +479,13 @@ export function AlurKelayakan() {
         {langkah === 4 && (
           <div className="space-y-8">
             <fieldset>
+              <legend className="text-lg font-semibold">Sebelum {profil.tahunPajak - 1}, pernahkah omzet Anda melewati Rp4,8 miliar dalam setahun?</legend>
+              <p className="mb-4 mt-1 text-xs leading-5 text-margin">Riwayat tahun yang lebih lama dapat memengaruhi hak PPh Final. Pilih Tidak yakin bila catatannya belum lengkap.</p>
+              <PilihanTiga nama="riwayat-ambang" nilai={profil.pernahMelewatiAmbang ?? 'tidak_yakin'} onChange={(nilai) => ubah('pernahMelewatiAmbang', nilai)} labelYa="Pernah" labelTidak="Belum pernah" />
+            </fieldset>
+            <fieldset>
               <legend className="text-lg font-semibold">
-                Pernahkah Anda memberi tahu kantor pajak bahwa Anda ingin memakai cara “Norma”?
+                Sudahkah Anda memberitahukan penggunaan Norma untuk tahun {profil.tahunPajak} tepat waktu?
               </legend>
               <p className="mb-4 mt-1 text-xs leading-5 text-margin">
                 Norma atau NPPN adalah cara memperkirakan penghasilan bersih memakai persentase resmi.
@@ -475,8 +497,8 @@ export function AlurKelayakan() {
                 nama="lapor-norma"
                 nilai={profil.sudahMemberitahukanNppn}
                 onChange={(nilai) => ubah('sudahMemberitahukanNppn', nilai)}
-                labelYa="Pernah"
-                labelTidak="Belum pernah"
+                labelYa="Sudah, tepat waktu"
+                labelTidak="Belum / terlambat"
               />
             </fieldset>
 
@@ -499,7 +521,7 @@ export function AlurKelayakan() {
           </div>
         )}
 
-        {langkah === 5 && <InputBuktiPotong daftar={kreditPajak} onChange={setKreditPajak} />}
+        {langkah === 5 && <InputBuktiPotong daftar={kreditPajak} onChange={setKreditPajak} onPendingChange={setBuktiBelumDisimpan} />}
       </div>
 
       {galat && (
@@ -513,6 +535,8 @@ export function AlurKelayakan() {
           <button
             type="button"
             onClick={() => {
+              if (buktiBelumDisimpan) { setGalat('Tambahkan atau kosongkan isian bukti potong sebelum kembali.'); return; }
+              setGalat(null);
               setSudahMencoba(false);
               setArah('mundur');
               setLangkah((nilai) => nilai - 1);
@@ -531,6 +555,6 @@ export function AlurKelayakan() {
           <span aria-hidden="true">→</span>
         </button>
       </div>
-    </section>
+    </section></div>
   );
 }

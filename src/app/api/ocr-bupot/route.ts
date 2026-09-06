@@ -13,9 +13,10 @@ import { hasilBupotOcrSchema } from '@/lib/schemas';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
+export const maxDuration = 60;
 
-const MODEL = process.env.GEMINI_MODEL ?? 'gemini-2.5-flash';
-const BATAS_BASE64 = 6 * 1024 * 1024;
+const MODEL_BAWAAN = 'gemini-3.6-flash';
+const BATAS_BASE64 = 4 * 1024 * 1024;
 const JENIS_DIIZINKAN = ['image/jpeg', 'image/png', 'image/webp'];
 
 const INSTRUKSI = [
@@ -59,7 +60,7 @@ function galat(pesan: string, status: number): NextResponse {
 }
 
 export async function POST(request: Request): Promise<NextResponse> {
-  const kunci = process.env.GEMINI_API_KEY;
+  const kunci = process.env.GEMINI_API_KEY?.trim();
   if (!kunci) {
     return galat(
       'Pembaca otomatis belum diaktifkan di server ini. Ketik angka bukti potong secara manual.',
@@ -67,7 +68,30 @@ export async function POST(request: Request): Promise<NextResponse> {
     );
   }
 
-  const permintaan = bacaPermintaan(await request.json().catch(() => null));
+  if (Number(request.headers.get('content-length') ?? 0) > BATAS_BASE64 + 1024) {
+    return galat('Ukuran foto melebihi batas. Perkecil dulu fotonya.', 413);
+  }
+  // Batas berlaku pada stream juga, termasuk permintaan tanpa Content-Length.
+  const reader = request.body?.getReader();
+  if (!reader) return galat('Permintaan tidak lengkap.', 400);
+  const chunks: Uint8Array[] = [];
+  let ukuran = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      ukuran += value.byteLength;
+      if (ukuran > BATAS_BASE64 + 1024) {
+        await reader.cancel();
+        return galat('Ukuran foto melebihi batas. Perkecil dulu fotonya.', 413);
+      }
+      chunks.push(value);
+    }
+  } catch { return galat('Permintaan tidak terbaca. Kirim ulang fotonya.', 400); }
+  let muatanPermintaan: unknown;
+  try { muatanPermintaan = JSON.parse(Buffer.concat(chunks).toString('utf8')); }
+  catch { return galat('Permintaan tidak lengkap. Kirim ulang foto bukti potong.', 400); }
+  const permintaan = bacaPermintaan(muatanPermintaan);
   if (!permintaan) {
     return galat('Permintaan tidak lengkap. Kirim ulang foto bukti potong.', 400);
   }
@@ -83,13 +107,26 @@ export async function POST(request: Request): Promise<NextResponse> {
   if (permintaan.dataBase64.length > BATAS_BASE64) {
     return galat('Ukuran foto melebihi batas. Perkecil dulu fotonya.', 413);
   }
+  if (!permintaan.dataBase64 || !/^[A-Za-z0-9+/]+={0,2}$/.test(permintaan.dataBase64) || permintaan.dataBase64.length % 4 !== 0) {
+    return galat('Data foto tidak valid. Pilih ulang berkas gambar.', 400);
+  }
+  if (Buffer.from(permintaan.dataBase64, 'base64').byteLength > 3 * 1024 * 1024) {
+    return galat('Ukuran foto melebihi 3 MB. Perkecil dulu fotonya.', 413);
+  }
+
+  const konfigurasiModel = process.env.GEMINI_MODEL?.trim();
+  // Migrasi konfigurasi deployment lama: 2.5 Flash menolak akun baru (404).
+  const model = !konfigurasiModel || konfigurasiModel === 'gemini-2.5-flash'
+    ? MODEL_BAWAAN : konfigurasiModel;
+  if (!/^[a-zA-Z0-9._-]+$/.test(model)) return galat('Konfigurasi pembaca belum valid. Gunakan input manual.', 503);
 
   let jawaban: Response;
   try {
     jawaban = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`,
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
       {
         method: 'POST',
+        signal: AbortSignal.timeout(45_000),
         headers: { 'Content-Type': 'application/json', 'x-goog-api-key': kunci },
         body: JSON.stringify({
           contents: [
@@ -149,6 +186,7 @@ function ambilTeks(muatan: unknown): string | null {
   if (!muatan || typeof muatan !== 'object') return null;
   const kandidat = (muatan as { candidates?: unknown }).candidates;
   if (!Array.isArray(kandidat) || kandidat.length === 0) return null;
+  if (!kandidat[0] || typeof kandidat[0] !== 'object') return null;
   const isi = (kandidat[0] as { content?: unknown }).content;
   if (!isi || typeof isi !== 'object') return null;
   const parts = (isi as { parts?: unknown }).parts;

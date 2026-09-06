@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 /**
- * Skema validasi masukan. Dipakai formulir (React Hook Form) dan orkestrator
+ * Skema validasi masukan. Dipakai formulir dan orkestrator
  * `auditPajakMandiri` sebelum satu pun aturan dievaluasi.
  */
 
@@ -51,7 +51,9 @@ export const profilWajibPajakSchema = z.object({
 
   sudahMemberitahukanNppn: jawabanKepatuhan,
   pernahPilihTarifUmum: jawabanKepatuhan,
-  jugaPegawaiTetap: z.boolean()
+  jugaPegawaiTetap: z.boolean(),
+  penghasilanNetoPegawai: uang.optional(),
+  pernahMelewatiAmbang: jawabanKepatuhan.optional()
 });
 
 /**
@@ -59,8 +61,8 @@ export const profilWajibPajakSchema = z.object({
  * sehingga jalur manual tidak pernah bergantung pada layanan luar.
  */
 export const kreditPajakItemSchema = z.object({
-  nomorBuktiPotong: z.string().max(60, 'Nomor bukti potong terlalu panjang.'),
-  pemotong: z.string().max(120, 'Nama pemotong terlalu panjang.'),
+  nomorBuktiPotong: z.string().trim().max(60, 'Nomor bukti potong terlalu panjang.'),
+  pemotong: z.string().trim().max(120, 'Nama pemotong terlalu panjang.'),
   penghasilanBruto: uang,
   pphDipotong: uang,
   sumber: z.enum(['MANUAL', 'OCR'])
@@ -69,15 +71,22 @@ export const kreditPajakItemSchema = z.object({
 export const inputAuditPajakSchema = z.object({
   profil: profilWajibPajakSchema,
   kreditPajak: z.array(kreditPajakItemSchema).max(50, 'Maksimal 50 bukti potong per pemeriksaan.')
+}).superRefine(({ kreditPajak }, ctx) => {
+  const nomor = new Set<string>();
+  kreditPajak.forEach((item, index) => {
+    const kode = item.nomorBuktiPotong.replace(/\s/g, '').toUpperCase();
+    if (kode && nomor.has(kode)) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['kreditPajak', index, 'nomorBuktiPotong'], message: 'Bukti potong dengan nomor ini sudah ditambahkan.' });
+    if (kode) nomor.add(kode);
+  });
 });
 
 /** Bentuk jawaban terstruktur yang boleh dikembalikan layanan OCR. */
 export const hasilBupotOcrSchema = z.object({
-  nomorBuktiPotong: z.string(),
-  pemotong: z.string(),
-  tanggal: z.string(),
-  penghasilanBruto: z.number().finite().nonnegative(),
-  pphDipotong: z.number().finite().nonnegative()
+  nomorBuktiPotong: z.string().max(60),
+  pemotong: z.string().max(120),
+  tanggal: z.string().max(32),
+  penghasilanBruto: uang,
+  pphDipotong: uang
 });
 
 export type ProfilWajibPajakInput = z.infer<typeof profilWajibPajakSchema>;

@@ -62,10 +62,21 @@ export function auditPajakMandiri(input: InputAuditPajak): HasilAuditPajak {
     throw new GalatMasukan(`Masukan belum lengkap atau tidak wajar. ${rincian}`);
   }
 
-  const { profil, kreditPajak } = input;
+  const { profil, kreditPajak } = tervalidasi.data;
   const kelayakan = periksaKelayakan(profil);
   const klu = cariKlu(profil.kluKode);
   const kreditBupot = totalKreditBupot(kreditPajak);
+  const netoPegawai = profil.jugaPegawaiTetap ? profil.penghasilanNetoPegawai : 0;
+  const batasKeluarga = profil.statusPerpajakanPasangan !== 'TIDAK_ADA_PASANGAN' &&
+    profil.statusPerpajakanPasangan !== 'PISAH_PUTUSAN_HAKIM';
+  // Neto pasangan dan pembagian pajak PH/MT tidak dapat diturunkan dari omzet.
+  const alasanBatas = profil.statusPtkp.startsWith('K/') && profil.statusPerpajakanPasangan === 'TIDAK_ADA_PASANGAN'
+    ? 'Status PTKP kawin belum sesuai dengan jawaban tidak ada pasangan. Periksa keadaan keluarga pada awal tahun pajak sebelum menghitung.'
+    : batasKeluarga
+    ? 'Perhitungan pajak keluarga belum tersedia. Neto pasangan, status penggabungan penghasilan, PTKP keluarga, dan pembagian pajak perlu diperiksa bersama; omzet pasangan saja tidak cukup.'
+    : profil.jugaPegawaiTetap && netoPegawai === undefined
+      ? 'Isi penghasilan neto dari bukti potong pegawai sebelum menghitung gabungan gaji dan usaha. PTKP hanya dikurangkan satu kali.'
+      : undefined;
 
   // ----- PPh Final 0,5% -----
   const kelayakanFinal = kelayakanDari(kelayakan.skema, 'PPH_FINAL_05');
@@ -77,7 +88,9 @@ export function auditPajakMandiri(input: InputAuditPajak): HasilAuditPajak {
       id: 'PPH_FINAL_05',
       ...bagianKelayakan(kelayakanFinal),
       statusKalkulasi: 'TIDAK_RELEVAN',
-      alasanKalkulasi: ALASAN_TIDAK_RELEVAN
+      alasanKalkulasi: kelayakanFinal.statusKelayakan === 'TIDAK_BOLEH'
+        ? 'Nominal tidak dihitung karena skema ini tidak boleh dipakai berdasarkan jawaban Anda. Lihat alasan dan dasar hukumnya di atas.'
+        : ALASAN_TIDAK_RELEVAN
     };
   } else if (pembebasan.statusVerifikasi === 'DALAM_REVIEW') {
     skemaFinal = {
@@ -111,8 +124,12 @@ export function auditPajakMandiri(input: InputAuditPajak): HasilAuditPajak {
       id: 'NPPN',
       ...bagianKelayakan(kelayakanNppn),
       statusKalkulasi: 'TIDAK_RELEVAN',
-      alasanKalkulasi: ALASAN_TIDAK_RELEVAN
+      alasanKalkulasi: kelayakanNppn.statusKelayakan === 'TIDAK_BOLEH'
+        ? 'Nominal tidak dihitung karena persyaratan penggunaan Norma belum terpenuhi. Lihat alasan dan dasar hukumnya di atas.'
+        : ALASAN_TIDAK_RELEVAN
     };
+  } else if (alasanBatas) {
+    skemaNppn = { id: 'NPPN', ...bagianKelayakan(kelayakanNppn), statusKalkulasi: 'BELUM_TERSEDIA', alasanKalkulasi: alasanBatas };
   } else if (!klu) {
     skemaNppn = {
       id: 'NPPN',
@@ -134,6 +151,7 @@ export function auditPajakMandiri(input: InputAuditPajak): HasilAuditPajak {
       persenNorma: persenNorma(klu, profil.wilayah),
       ptkp: PARAMETER.ptkp.nilai[profil.statusPtkp],
       kreditBupot,
+      penghasilanNetoPegawai: netoPegawai,
       lapisan: PARAMETER.tarifProgresif.lapisan
     });
     skemaNppn = {
@@ -156,6 +174,8 @@ export function auditPajakMandiri(input: InputAuditPajak): HasilAuditPajak {
       statusKalkulasi: 'TIDAK_RELEVAN',
       alasanKalkulasi: ALASAN_TIDAK_RELEVAN
     };
+  } else if (alasanBatas) {
+    skemaTarifUmum = { id: 'TARIF_UMUM', ...bagianKelayakan(kelayakanTarifUmum), statusKalkulasi: 'BELUM_TERSEDIA', alasanKalkulasi: alasanBatas };
   } else if (profil.biayaOperasionalRiil === undefined) {
     skemaTarifUmum = {
       id: 'TARIF_UMUM',
@@ -164,12 +184,15 @@ export function auditPajakMandiri(input: InputAuditPajak): HasilAuditPajak {
       alasanKalkulasi:
         'Isi dulu total biaya usaha setahun. Biaya yang dikosongkan tidak boleh dianggap Rp0 karena membuat pajaknya terlihat jauh lebih besar dari seharusnya.'
     };
+  } else if (profil.jugaPegawaiTetap && profil.biayaOperasionalRiil > profil.omzetPribadiTahunPajak) {
+    skemaTarifUmum = { id: 'TARIF_UMUM', ...bagianKelayakan(kelayakanTarifUmum), statusKalkulasi: 'BELUM_TERSEDIA', alasanKalkulasi: 'Biaya usaha melebihi omzet. Perlakuan rugi usaha terhadap penghasilan pegawai perlu diperiksa sebelum pajak gabungan dihitung.' };
   } else {
     const rincian = hitungTarifUmum({
       omzetPribadi: profil.omzetPribadiTahunPajak,
       biayaOperasional: profil.biayaOperasionalRiil,
       ptkp: PARAMETER.ptkp.nilai[profil.statusPtkp],
       kreditBupot,
+      penghasilanNetoPegawai: netoPegawai,
       lapisan: PARAMETER.tarifProgresif.lapisan
     });
     skemaTarifUmum = {
@@ -188,7 +211,9 @@ export function auditPajakMandiri(input: InputAuditPajak): HasilAuditPajak {
       item.statusKalkulasi === 'TERSEDIA'
   );
 
-  const rekomendasiHemat = terhitung.length
+  // Final adalah pajak usaha sebelum setoran, sementara skema umum dikurangi kredit.
+  // Jangan membandingkan sisa bayar dengan pajak bruto atau total gaji dengan usaha saja.
+  const rekomendasiHemat = terhitung.length === skema.length && kreditBupot === 0 && !profil.jugaPegawaiTetap
     ? terhitung.reduce((termurah, kandidat) =>
         kandidat.pajakTerutang < termurah.pajakTerutang ? kandidat : termurah
       )
@@ -196,11 +221,12 @@ export function auditPajakMandiri(input: InputAuditPajak): HasilAuditPajak {
 
   return {
     versiRegulasi: basisAturan.versiRegulasi,
-    tanggalAudit: new Date().toISOString().slice(0, 10),
+    tanggalAudit: new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Jakarta', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date()),
     profil,
     totalKreditBupot: kreditBupot,
     skema,
-    peringatan: kelayakan.peringatan,
+    peringatan: [...kelayakan.peringatan, ...(alasanBatas ? [alasanBatas] : []),
+      ...(skema.some((s) => s.statusKalkulasi === 'TERSEDIA' && s.rincianKalkulasi.skema !== 'PPH_FINAL_05' && s.rincianKalkulasi.kelebihanKredit > 0) ? ['Kredit pajak melebihi perkiraan pajak pada salah satu skema. Selisih ditampilkan untuk dicocokkan dalam SPT; bukan janji pengembalian pajak.'] : [])],
     langkahTindakLanjut: kelayakan.langkahTindakLanjut,
     rekomendasiHemat: rekomendasiHemat
       ? { id: rekomendasiHemat.id, pajakTerutang: rekomendasiHemat.pajakTerutang }

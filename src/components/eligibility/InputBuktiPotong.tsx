@@ -1,10 +1,11 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { InputRupiah } from '@/components/ui/InputRupiah';
 import { formatCurrency } from '@/lib/format';
 import { GalatBerkas, GalatPersetujuan, bacaBupotDenganPersetujuan } from '@/lib/ocr';
 import type { KreditPajakItem } from '@/types/pajak';
+import { kreditPajakItemSchema } from '@/lib/schemas';
 
 /**
  * Isian bukti potong.
@@ -23,10 +24,12 @@ const kosong = {
 
 export function InputBuktiPotong({
   daftar,
-  onChange
+  onChange,
+  onPendingChange
 }: {
   daftar: KreditPajakItem[];
   onChange: (daftar: KreditPajakItem[]) => void;
+  onPendingChange?: (pending: boolean) => void;
 }) {
   const [isian, setIsian] = useState(kosong);
   const [sumber, setSumber] = useState<'MANUAL' | 'OCR'>('MANUAL');
@@ -34,6 +37,10 @@ export function InputBuktiPotong({
   const [sedangMembaca, setSedangMembaca] = useState(false);
   const [pesan, setPesan] = useState<string | null>(null);
   const inputBerkas = useRef<HTMLInputElement>(null);
+  const permintaan = useRef<AbortController | null>(null);
+  const adaIsian = Boolean(isian.nomorBuktiPotong || isian.pemotong || isian.penghasilanBruto !== undefined || isian.pphDipotong !== undefined);
+  useEffect(() => { onPendingChange?.(adaIsian || sedangMembaca); }, [adaIsian, sedangMembaca, onPendingChange]);
+  useEffect(() => () => { permintaan.current?.abort(); onPendingChange?.(false); }, [onPendingChange]);
 
   const total = daftar.reduce((jumlah, item) => jumlah + item.pphDipotong, 0);
 
@@ -43,6 +50,13 @@ export function InputBuktiPotong({
       setPesan('Isi jumlah pajak yang sudah dipotong terlebih dahulu.');
       return;
     }
+    if (daftar.length >= 50) { setPesan('Maksimal 50 bukti potong. Hapus salah satu untuk menambahkan yang lain.'); return; }
+    const kode = isian.nomorBuktiPotong.replace(/\s/g, '').toUpperCase();
+    if (kode && daftar.some((item) => item.nomorBuktiPotong.replace(/\s/g, '').toUpperCase() === kode)) {
+      setPesan('Nomor bukti potong ini sudah ada. Periksa daftar agar pajak tidak dikreditkan dua kali.'); return;
+    }
+    const valid = kreditPajakItemSchema.safeParse({ ...isian, penghasilanBruto: isian.penghasilanBruto ?? 0, pphDipotong, sumber });
+    if (!valid.success) { setPesan(valid.error.issues[0].message); return; }
     onChange([
       ...daftar,
       {
@@ -63,10 +77,15 @@ export function InputBuktiPotong({
   };
 
   const bacaFoto = async (file: File) => {
+    permintaan.current?.abort();
+    const controller = new AbortController();
+    permintaan.current = controller;
+    const batasWaktu = window.setTimeout(() => controller.abort(), 50_000);
     setSedangMembaca(true);
     setPesan(null);
     try {
-      const hasil = await bacaBupotDenganPersetujuan(file, setujuKirimFoto);
+      const hasil = await bacaBupotDenganPersetujuan(file, setujuKirimFoto, controller.signal);
+      if (controller.signal.aborted) return;
       setIsian({
         nomorBuktiPotong: hasil.nomorBuktiPotong,
         pemotong: hasil.pemotong,
@@ -76,7 +95,9 @@ export function InputBuktiPotong({
       setSumber('OCR');
       setPesan('Angka sudah diisi dari foto. Periksa dan perbaiki bila ada yang salah baca.');
     } catch (kesalahan) {
-      if (kesalahan instanceof GalatPersetujuan || kesalahan instanceof GalatBerkas) {
+      if (controller.signal.aborted) {
+        setPesan('Pembacaan dibatalkan atau terlalu lama. Coba lagi atau ketik manual.');
+      } else if (kesalahan instanceof GalatPersetujuan || kesalahan instanceof GalatBerkas) {
         setPesan(kesalahan.message);
       } else if (kesalahan instanceof Error) {
         setPesan(kesalahan.message);
@@ -84,6 +105,7 @@ export function InputBuktiPotong({
         setPesan('Foto gagal dibaca. Ketik angkanya secara manual.');
       }
     } finally {
+      window.clearTimeout(batasWaktu);
       setSedangMembaca(false);
       if (inputBerkas.current) inputBerkas.current.value = '';
     }
@@ -98,6 +120,7 @@ export function InputBuktiPotong({
           potong. Angka itu mengurangi pajak yang masih harus Anda bayar. Lewati bagian ini bila
           tidak punya.
         </p>
+        <p className="mt-2 text-xs leading-5 text-margin">Masukkan hanya kredit pajak nonfinal untuk tahun yang diperiksa, termasuk PPh 21 gaji. Jangan masukkan setoran atau potongan PPh Final 0,5% di sini.</p>
       </div>
 
       {daftar.length > 0 && (
@@ -129,11 +152,13 @@ export function InputBuktiPotong({
         </ul>
       )}
 
-      <div className="grid gap-3 sm:grid-cols-2">
+      <fieldset disabled={sedangMembaca} className="grid gap-3 sm:grid-cols-2 disabled:opacity-60">
+        <legend className="sr-only">Rincian bukti potong</legend>
         <label className="block text-sm">
           <span className="mb-1.5 block font-semibold">Nama pemotong</span>
           <input
             type="text"
+            maxLength={120}
             value={isian.pemotong}
             onChange={(e) => setIsian({ ...isian, pemotong: e.target.value })}
             placeholder="Nama klien atau perusahaan"
@@ -145,6 +170,7 @@ export function InputBuktiPotong({
           <span className="mb-1.5 block font-semibold">Nomor bukti potong</span>
           <input
             type="text"
+            maxLength={60}
             value={isian.nomorBuktiPotong}
             onChange={(e) => setIsian({ ...isian, nomorBuktiPotong: e.target.value })}
             placeholder="Tertulis di lembar bukti potong"
@@ -164,15 +190,17 @@ export function InputBuktiPotong({
           onChange={(nilai) => setIsian({ ...isian, pphDipotong: nilai })}
           bolehKosong
         />
-      </div>
+      </fieldset>
 
       <button
         type="button"
         onClick={tambah}
+        disabled={sedangMembaca || daftar.length >= 50}
         className="pressable min-h-11 border border-line bg-white px-5 text-sm font-semibold hover:border-blue"
       >
         Tambahkan bukti potong
       </button>
+      {adaIsian && <button type="button" className="ml-3 min-h-11 text-xs font-semibold underline" onClick={() => { permintaan.current?.abort(); setIsian(kosong); setSumber('MANUAL'); setPesan(null); }}>Kosongkan isian</button>}
 
       <details className="detail-panel border border-line bg-paper/70 p-4">
         <summary className="cursor-pointer list-none text-sm font-semibold">
@@ -190,7 +218,7 @@ export function InputBuktiPotong({
               type="checkbox"
               className="mt-0.5 h-5 w-5 accent-blue"
               checked={setujuKirimFoto}
-              onChange={(e) => setSetujuKirimFoto(e.target.checked)}
+              onChange={(e) => { setSetujuKirimFoto(e.target.checked); if (!e.target.checked) permintaan.current?.abort(); }}
             />
             <span className="text-ink">
               Saya setuju foto bukti potong ini dikirim ke layanan pembaca otomatis.
@@ -199,6 +227,7 @@ export function InputBuktiPotong({
           <input
             ref={inputBerkas}
             type="file"
+            aria-label="Pilih foto bukti potong"
             accept="image/jpeg,image/png,image/webp"
             disabled={!setujuKirimFoto || sedangMembaca}
             onChange={(e) => {

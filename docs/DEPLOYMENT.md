@@ -16,7 +16,7 @@ Paket Vercel Hobby (gratis) tidak dapat men-deploy repositori milik **organisasi
 | `origin` | `https://github.com/AkuSukaProject/Pajak-Wajar.git` | Repositori tim, sumber kebenaran |
 | `pribadi` | `https://github.com/samythh/Pajak-Wajar.git` | Repositori pribadi (privat), khusus agar Vercel Hobby dapat men-deploy |
 
-Kerjakan dan review kode tetap di `origin`. `pribadi` hanya cermin untuk deployment:
+Repo organisasi menyimpan kode tim. Situs yang sudah aktif mengambil kode dari `main` di repo pribadi; perbarui cabang di kedua remote bila diperlukan:
 
 ```bash
 git push origin <cabang>     # alur kerja tim seperti biasa
@@ -47,7 +47,7 @@ npx vercel --prod # produksi
 | Nama | Wajib | Lingkup | Keterangan |
 |---|---|---|---|
 | `GEMINI_API_KEY` | Tidak | Server saja | Hanya untuk pembacaan foto bukti potong. Tanpa kunci ini aplikasi tetap berjalan penuh: `/api/ocr-bupot` menjawab 503 dan antarmuka mengarahkan pengguna mengetik manual. |
-| `GEMINI_MODEL` | Tidak | Server saja | Bawaan `gemini-2.5-flash`. |
+| `GEMINI_MODEL` | Tidak | Server saja | Bawaan `gemini-3.6-flash`. |
 
 Isi keduanya di **Project Settings → Environment Variables** pada Vercel, bukan di berkas yang ikut ter-commit. Jangan pernah memakai awalan `NEXT_PUBLIC_` untuk kunci ini: variabel berawalan itu ikut terkirim ke peramban.
 
@@ -111,7 +111,7 @@ Selama `.env.local` tidak ada atau kuncinya kosong, tes itu **dilewati** dan tid
 
 ### Kuota dan biaya
 
-AI Studio menyediakan kuota gratis dengan batas permintaan per menit dan per hari. Untuk demo lomba, satu bukti potong per pembacaan jelas jauh di bawah batas itu. Periksa kuota dan harga yang berlaku di halaman AI Studio sebelum memakainya di luar demo, karena ketentuannya dapat berubah.
+AI Studio menyediakan kuota gratis dengan batas permintaan per menit dan per hari. Kuota bergantung pada akun, model, dan tingkat layanan; periksa di AI Studio. Periksa kuota dan harga yang berlaku di halaman AI Studio sebelum memakainya di luar demo, karena ketentuannya dapat berubah.
 
 ## Yang berjalan di mana
 
@@ -137,28 +137,16 @@ curl -sI https://<domain-anda>/ | grep -i "x-content-type-options\|x-frame-optio
 3. Buka panel “Lihat aturan resminya”, klik satu tautan JDIH, pastikan dokumen aslinya terbuka.
 4. Bila `GEMINI_API_KEY` belum diisi, pastikan pesan yang muncul mengarahkan ke input manual, bukan pesan galat teknis.
 
-## Catatan keamanan dependensi
+## Dependensi dan batas OCR
 
-`npm audit` masih melaporkan 8 temuan. Seluruhnya berasal dari dependensi transitif dan belum ada perbaikan non-breaking:
+`npm audit` pada 6 September 2026: **0 kerentanan**. Vitest diperbarui ke 3.2.7. Override terbatas pada dependensi Next.js memakai PostCSS 8.5.28 dan sharp 0.35.4; perubahan diuji lewat build produksi. Tidak perlu `npm audit fix --force`.
 
-| Paket | Jalur | Perbaikan |
-|---|---|---|
-| `postcss` (4 advisory, high) | transitif dari `next@15.5.23` | butuh `next@16` (breaking) |
-| `sharp` (high) | transitif dari `next@15.5.23` | butuh `next@16` (breaking) |
-| `esbuild`, `vite`, `@vitest/mocker`, `vite-node` (moderate–high) | transitif dari `vitest@2` | butuh `vitest@5` + `vite@8` (breaking) |
-| `vitest` (**critical**) | GHSA-5xrq-8626-4rwp | butuh `vitest@5` (breaking) |
+Foto dibatasi **3 MB** di klien dan server. Encoding base64 menambah ukuran; batas ini menjaga JSON di bawah [batas payload Vercel 4,5 MB](https://vercel.com/docs/functions/limitations). Permintaan dibatasi 45 detik ke Gemini, 50 detik di browser, dan durasi fungsi 60 detik. Pengguna tetap dapat mengetik manual saat layanan gagal.
 
-Ditelusuri satu per satu, tidak ada yang dapat dieksploitasi pada aplikasi ini:
+Model bawaan: `gemini-3.6-flash`. Konfigurasi lama `gemini-2.5-flash` otomatis dimigrasikan karena model lama menolak akun baru dengan 404 saat pengujian. [Dokumentasi model](https://ai.google.dev/gemini-api/docs/models/gemini-3.6-flash).
 
-- **`vitest` critical** hanya berlaku *"when Vitest UI server is listening"*. Proyek ini tidak memakai Vitest UI: `@vitest/ui` tidak terpasang, dan skripnya hanya `vitest run` dan `vitest`.
-- **`sharp`** hanya dipanggil `next/image`. Aplikasi ini tidak memakai `next/image` sama sekali.
-- **`postcss`** berjalan saat build atas berkas CSS milik proyek sendiri, bukan atas masukan pengguna.
-- **`esbuild` dan `vite`** menyangkut dev server, bukan build produksi maupun runtime di Vercel.
+## Pembaruan produksi
 
-Karena tidak ada yang fatal dan perbaikannya menuntut lompatan versi mayor, pembaruan **sengaja ditunda sampai setelah tenggat lomba**. Jangan menjalankan `npm audit fix --force` menjelang submission. Setelahnya:
+Situs: https://pajak-wajar.vercel.app/ . Sumber deployment: `main` pada repo pribadi **samythh/Pajak-Wajar**. Mengirim perubahan hanya ke repo organisasi tidak memperbarui situs ini. Buat cabang perbaikan dan PR ke repo pribadi, jalankan pemeriksaan, lalu gabungkan PR agar Vercel membangun ulang produksi. Hindari push langsung ke main.
 
-```bash
-npm install next@16 eslint-config-next@16
-npm install -D vitest@5 vite@8
-npm run lint && npm run typecheck && npm test && npm run build
-```
+API key asli hanya berada di Vercel Environment Variables dan `.env.local` yang diabaikan Git. `.env.example` hanya berisi nama variabel dan nilai contoh kosong. Setelah mengubah variabel Vercel, lakukan redeploy. Tidak diperlukan pemindahan repo ke organisasi.

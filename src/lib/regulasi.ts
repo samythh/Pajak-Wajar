@@ -109,6 +109,7 @@ export type BasisAturan = {
     pintuSatuArahLewatAmbang: AturanKelayakanEntri;
     pemberitahuanNppn: AturanKelayakanEntri;
     ketentuanPeralihan2025: AturanKelayakanEntri;
+    ketentuanPeralihanAgregat2026: AturanKelayakanEntri;
   };
   klu: EntriKlu[];
 };

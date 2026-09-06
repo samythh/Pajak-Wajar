@@ -313,7 +313,8 @@
         "pintuSatuArahTarifUmum",
         "pintuSatuArahLewatAmbang",
         "pemberitahuanNppn",
-        "ketentuanPeralihan2025"
+        "ketentuanPeralihan2025",
+        "ketentuanPeralihanAgregat2026"
       ],
       "properties": {
         "pekerjaanBebas": {
@@ -335,6 +336,9 @@
           "$ref": "#/$defs/aturan"
         },
         "pemberitahuanNppn": {
+          "$ref": "#/$defs/aturan"
+        },
+        "ketentuanPeralihanAgregat2026": {
           "$ref": "#/$defs/aturan"
         },
         "ketentuanPeralihan2025": {

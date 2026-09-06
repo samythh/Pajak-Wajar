@@ -22,7 +22,8 @@ const dasar: ProfilWajibPajak = {
   omzetSeluruhPerseroanPeroranganThnSebelumnya: 0,
   sudahMemberitahukanNppn: false,
   pernahPilihTarifUmum: false,
-  jugaPegawaiTetap: false
+  jugaPegawaiTetap: false,
+  pernahMelewatiAmbang: false
 };
 
 function status(profil: ProfilWajibPajak, id: IdSkema): StatusKelayakan {
@@ -131,13 +132,13 @@ describe('saringan ambang peredaran bruto', () => {
     expect(status(profil, 'PPH_FINAL_05')).toBe('BOLEH');
   });
 
-  it('perseroan perorangan ikut dijumlahkan dalam uji ambang', () => {
+  it('agregat perseroan melewati ambang memerlukan pemeriksaan transisi 2026', () => {
     const profil: ProfilWajibPajak = {
       ...dasar,
       omzetPribadiThnSebelumnya: 4_000_000_000,
       omzetSeluruhPerseroanPeroranganThnSebelumnya: 1_000_000_000
     };
-    expect(status(profil, 'PPH_FINAL_05')).toBe('TIDAK_BOLEH');
+    expect(status(profil, 'PPH_FINAL_05')).toBe('PERLU_DIPASTIKAN');
   });
 
   it('omzet pasangan diabaikan bila pengguna belum menikah', () => {

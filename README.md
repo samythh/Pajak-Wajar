@@ -3,10 +3,11 @@
 # PajakWajar
 ### Cek dulu skemanya, baru hitung pajaknya.
 
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Vercel-17497d?style=for-the-badge&logo=vercel)](https://pajak-wajar.vercel.app/)
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/AkuSukaProject/Pajak-Wajar)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 [![Status](https://img.shields.io/badge/Status-Aplikasi_Berfungsi-2ea44f?style=for-the-badge)](#fitur-unggulan)
-[![Tes](https://img.shields.io/badge/Vitest-116_lulus-2ea44f?style=for-the-badge)](#testing)
+[![Tes](https://img.shields.io/badge/Vitest-136_lulus-2ea44f?style=for-the-badge)](#testing)
 
 **Submission for ITECHNO CUP 2026 - Web Development**
 
@@ -60,7 +61,7 @@ PajakWajar bekerja dengan urutan **kelayakan → perhitungan → konsekuensi →
 
 Seluruh keputusan kelayakan dan seluruh perhitungan lahir dari aturan yang ditulis eksplisit di `data/klu_rules.json`. Tidak ada model bahasa yang ikut memutuskan hak hukum atau menghitung angka. AI dipakai pada tepat satu titik, yaitu membaca foto bukti potong menjadi angka terstruktur, dengan persetujuan eksplisit pengguna dan mode ketik manual yang selalu tersedia.
 
-> **Status saat ini:** mesin aturan, kalkulator, formulir, kertas kerja PDF, dan input bukti potong sudah berfungsi dan diuji. Seluruh parameter dicocokkan ke **teks asli** PP 20/2026, UU 7/2021, UU 36/2008, dan PER-17/PJ/2015 beserta Lampiran I. Yang belum: deployment publik dan satu panggilan nyata ke layanan OCR. Aplikasi ini alat bantu, bukan nasihat pajak.
+> **Status saat ini:** demo publik tersedia di [pajak-wajar.vercel.app](https://pajak-wajar.vercel.app/), dari repo pribadi `samythh/Pajak-Wajar`. Tim tetap **AkuSukaProject**. Formulir, kalkulator, PDF, dan OCR dengan bukti potong contoh sudah diuji. Kasus pajak keluarga, riwayat final 2025, multi-kegiatan, serta peralihan tertentu masih memerlukan pemeriksaan tambahan; sistem menahan nominal yang belum dapat dipastikan. Ini alat bantu, bukan nasihat pajak.
 
 ### Tujuan Proyek
 
@@ -103,12 +104,12 @@ Seluruh keputusan kelayakan dan seluruh perhitungan lahir dari aturan yang ditul
 - [x] Menampilkan perbandingan perhitungan serta konsekuensi pilihan skema.
 - [x] Menambahkan input bukti potong manual, kemudian OCR dengan persetujuan pengguna.
 - [x] Menghasilkan PDF kertas kerja pra-lapor.
-- [x] Mengimplementasikan pengujian aturan dan perhitungan (80 tes).
+- [x] Mengimplementasikan pengujian aturan dan perhitungan (lihat jumlah terbaru pada bagian Testing).
 - [x] Mencocokkan persentase Norma ke Lampiran I PER-17/PJ/2015, baris per baris (17 dari 20 KLU ternyata salah dan sudah dikoreksi).
-- [x] Menguji route OCR: 18 tes dengan layanan disimulasikan, plus satu tes ke Gemini sungguhan yang siap dijalankan begitu ada API key.
+- [x] Menguji route OCR: 18 tes dengan layanan disimulasikan, plus satu tes ke Gemini sungguhan yang sudah berhasil dengan gambar contoh.
 - [ ] Mencocokkan kode KLU ke KBLI 2020.
-- [ ] Menjalankan `npm run test:ocr` dengan `GEMINI_API_KEY` sungguhan.
-- [ ] Deployment publik ke Vercel.
+- [x] Menjalankan `npm run test:ocr` dengan `GEMINI_API_KEY` sungguhan.
+- [x] Deployment publik ke Vercel melalui repo pribadi.
 
 ---
 
@@ -118,7 +119,7 @@ Seluruh keputusan kelayakan dan seluruh perhitungan lahir dari aturan yang ditul
 
 ### Live Demo
 
-Deployment publik belum dilakukan. Untuk mencoba aplikasi, ikuti [Instalasi & Setup](#instalasi-setup), lalu buka [halaman utama lokal](http://localhost:3000) atau [formulir kelayakan lokal](http://localhost:3000/cek-kelayakan). Langkah lengkap ke Vercel ada di [panduan deployment](./docs/DEPLOYMENT.md), dan skenario peragaan ada di [panduan demo](./docs/DEMO.md).
+Buka **[PajakWajar](https://pajak-wajar.vercel.app/)** atau langsung **[cek kelayakan](https://pajak-wajar.vercel.app/cek-kelayakan)**. Deployment terhubung ke `main` pada repo pribadi `samythh/Pajak-Wajar`; repo organisasi tetap menjadi repositori tim. Lihat [panduan deployment](./docs/DEPLOYMENT.md) dan [skenario demo](./docs/DEMO.md).
 
 ### Screenshot Aplikasi
 
@@ -131,7 +132,7 @@ Screenshot berikut diambil dari build produksi lokal pada 5 September 2026 memak
   <img src="docs/screenshots/landing-mobile.png" alt="Halaman utama PajakWajar pada perangkat seluler" width="320" />
   <p><em>Tampilan seluler — tata letak halaman utama pada layar kecil.</em></p>
 
-  <img src="docs/screenshots/formulir.png" alt="Langkah pemilihan pekerjaan beserta pertanyaan cara menjalankan kegiatan" width="800" />
+  <img src="docs/screenshots/formulir.png" alt="Formulir pemeriksaan kelayakan pajak" width="800" />
   <p><em>Formulir — pemilihan pekerjaan, cara menjalankannya, kelompok wilayah, dan jumlah kegiatan.</em></p>
 
   <img src="docs/screenshots/hasil-kelayakan.png" alt="Tiga kartu hasil kelayakan beserta perkiraan pajak" width="800" />
@@ -143,7 +144,7 @@ Screenshot berikut diambil dari build produksi lokal pada 5 September 2026 memak
 
 ### Video Demo
 
-[Unduh rekaman demo prototipe](./docs/demo/pajakwajar-prototipe.webm). Video tanpa narasi ini direkam pada tahap prototipe antarmuka, sehingga **belum memperagakan mesin aturan dan kalkulator yang kini sudah berfungsi**; rekaman baru perlu diambil untuk submission akhir.
+[Unduh rekaman demo aplikasi](./docs/demo/pajakwajar-demo.webm). Rekaman tanpa narasi ini memperagakan enam langkah, bukti potong manual, hasil perhitungan, unduhan PDF, dan perubahan jawaban. [Skenario narasi](./docs/DEMO.md) tersedia untuk presentasi tim.
 
 Contoh keluaran kertas kerja tersedia sebagai berkas: [contoh-kertas-kerja.pdf](./docs/demo/contoh-kertas-kerja.pdf).
 
@@ -184,9 +185,9 @@ OCR          : Gemini API, structured JSON, temperature 0; opsional dan butuh pe
 
 ```text
 Package Mgmt : npm dengan package-lock.json
-Deployment   : Vercel (vercel.json, region sin1); belum dieksekusi
+Deployment   : Vercel (region sin1), https://pajak-wajar.vercel.app/
 CI/CD        : Belum ada workflow di repositori
-Testing      : Vitest; 116 tes lulus pada 7 berkas. Ajv 2020 untuk integritas data aturan
+Testing      : Vitest; 136 tes rutin pada 8 berkas. Ajv 2020 untuk integritas data aturan
 Type Check   : TypeScript (tsc --noEmit), tanpa `any`
 Monitoring   : Belum dikonfigurasi
 ```
@@ -365,7 +366,7 @@ Isi contoh:
 # Hanya diperlukan bila pembacaan foto bukti potong (OCR) diaktifkan.
 GEMINI_API_KEY=
 
-# Opsional. Bawaan: gemini-2.5-flash
+# Opsional. Bawaan: gemini-3.6-flash
 GEMINI_MODEL=
 ```
 
@@ -478,7 +479,8 @@ const hasil = auditPajakMandiri({
     omzetSeluruhPerseroanPeroranganThnSebelumnya: 0,
     sudahMemberitahukanNppn: true,
     pernahPilihTarifUmum: false,
-    jugaPegawaiTetap: false
+    jugaPegawaiTetap: false,
+    pernahMelewatiAmbang: false
   },
   kreditPajak: []
 });
@@ -517,7 +519,7 @@ npm run build
 
 ### Test Coverage
 
-**80 tes lulus** pada lima berkas:
+**136 tes rutin** pada delapan berkas, ditambah satu tes integrasi OCR opsional:
 
 | Berkas | Tes | Fokus |
 |--------|-----|-------|
@@ -526,14 +528,15 @@ npm run build
 | [tests/eligibility.test.ts](./tests/eligibility.test.ts) | 32 | Agregasi prioritas dan empat saringan kelayakan. |
 | [tests/audit-pajak.test.ts](./tests/audit-pajak.test.ts) | 13 | Konsistensi status kalkulasi dan batasan perhitungan. |
 | [tests/schemas.test.ts](./tests/schemas.test.ts) | 15 | Kontrak masukan formulir dan bukti potong. |
+| [tests/audit-regression.test.ts](./tests/audit-regression.test.ts) | 15 | Pembulatan PKP, gaji, kelebihan kredit, duplikasi bukti potong, batas pajak keluarga dan riwayat 2025/2026. |
 | [tests/format.test.ts](./tests/format.test.ts) | 13 | Pemisah ribuan pada isian nominal, termasuk jaminan titik tidak bocor ke perhitungan. |
-| [tests/ocr.test.ts](./tests/ocr.test.ts) | 18 (+1 opsional) | Gerbang persetujuan, batas berkas, dan seluruh kode galat route OCR. Tes ke layanan Gemini sungguhan berjalan hanya bila `GEMINI_API_KEY` tersedia. |
+| [tests/ocr.test.ts](./tests/ocr.test.ts) | 23 (+1 opsional) | Gerbang persetujuan, batas berkas, dan seluruh kode galat route OCR. Tes nyata dijalankan khusus dengan `npm run test:ocr` dan `GEMINI_API_KEY`; `npm test` tidak mengirim gambar. |
 
-Pemeriksaan pada 5 September 2026: lint, pemeriksaan tipe, build produksi, dan 116 tes berhasil; alur enam langkah juga dijalankan otomatis pada peramban tanpa error konsol. Rinciannya di [laporan pemeriksaan](./docs/TESTING.md).
+Pemeriksaan ulang 6 September 2026 mencakup lint, tipe, build produksi, regresi pembulatan PKP dan gaji, input ganda, browser mobile/desktop, serta PDF. Rinciannya di [laporan pemeriksaan](./docs/TESTING.md).
 
 Persentase coverage belum diukur. Script E2E dan coverage belum dikonfigurasi sebagai perintah npm.
 
-`npm audit` melaporkan 8 temuan pada dependensi transitif, termasuk satu bertanda *critical*. Ditelusuri satu per satu, **tidak ada yang dapat dieksploitasi pada aplikasi ini**: yang *critical* hanya berlaku saat Vitest UI berjalan (`@vitest/ui` tidak terpasang), `sharp` hanya dipakai `next/image` yang tidak dipakai proyek ini, dan sisanya menyangkut dev server atau proses build. Perbaikannya menuntut lompatan `next@16` dan `vitest@5`, sehingga sengaja ditunda sampai setelah tenggat. Analisis lengkapnya ada di [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md).
+`npm audit` melaporkan **0 kerentanan** setelah pembaruan Vitest dan dependensi transitif PostCSS serta sharp. Versi terkunci di `package-lock.json`; gunakan `npm ci` untuk instalasi yang sama.
 
 ### Pemeriksaan Manual
 

@@ -1,3 +1,21 @@
+# Audit kesiapan 6 September 2026
+
+Pemeriksaan terbaru menggantikan status pada laporan 5 September di bawah. Lingkungan: Windows, Node.js 24.19.0, Next.js 15.5.23, Vitest 3.2.7, Chromium lewat Playwright CLI.
+
+- 136 tes rutin pada 8 berkas; satu tes layanan nyata hanya berjalan lewat `npm run test:ocr` dengan API key.
+- OCR nyata berhasil membaca gambar sintetis `tests/fixtures/contoh-bupot.png`: nomor 1.2-08.26-0000123, bruto Rp120.000.000 dan PPh Rp6.000.000.
+- Lint, pemeriksaan tipe, dan build produksi diperiksa kembali setelah perubahan.
+- `npm audit`: 0 kerentanan sesudah pembaruan Vitest dan override PostCSS/sharp.
+- Regresi mencakup PKP Rp60.000.999 yang dibulatkan menjadi Rp60.000.000, neto pecahan, penggabungan gaji, kelebihan kredit, duplikasi bupot, dan batas cakupan keluarga/riwayat final.
+- Browser: enam langkah, validasi pekerjaan wajib, nominal dengan pemisah ribuan, kredit manual, draf belum disimpan, hasil kreator, navigasi kembali, unduhan PDF, dan lebar seluler/desktop.
+- PDF contoh kreator dan pedagang dirender lalu diperiksa secara visual. Ringkasan di halaman pertama dan satu halaman rincian per skema; seluruh halaman memiliki nomor, tidak ada teks di luar halaman. Contoh tersimpan di `docs/demo/contoh-kertas-kerja.pdf`.
+
+Perhitungan yang memerlukan data di luar formulir ditandai belum tersedia. Tes perangkat lunak tidak menggantikan pemeriksaan aturan oleh praktisi pajak. Uji OCR memakai dokumen karangan, bukan data pengguna.
+
+---
+
+## Arsip pemeriksaan sebelumnya (5 September)
+
 # Pemeriksaan PajakWajar
 
 Tanggal pemeriksaan: **5 September 2026**. Lingkungan: Windows 11, Node.js 24.19.0, npm, build Next.js produksi lokal, dan Chromium (Playwright 1.63) pada server produksi lokal.

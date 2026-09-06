@@ -287,6 +287,17 @@
         }
       ]
     },
+    "ketentuanPeralihanAgregat2026": {
+      "kode": "PERALIHAN_AGREGAT_2026",
+      "statusVerifikasi": "DALAM_REVIEW",
+      "dasarHukum": [{
+        "namaRegulasi": "PP No. 20 Tahun 2026",
+        "pasalAtauLampiran": "Pasal II angka 1 huruf f",
+        "fungsi": "Pemeriksaan riwayat peralihan pengecualian Pasal 57 ayat (2) huruf e sampai akhir 2026",
+        "url": "https://jdih.kemenkeu.go.id/dok/pp-20-tahun-2026",
+        "statusVerifikasi": "DALAM_REVIEW"
+      }]
+    },
     "ketentuanPeralihan2025": {
       "kode": "PERALIHAN_2025",
       "pesan": "Untuk Tahun Pajak 2025, PP 20/2026 hanya dapat dipakai oleh Wajib Pajak orang pribadi yang jangka waktu PPh Final-nya menurut PP 55/2022 berakhir pada Tahun Pajak 2024. Pastikan kapan jangka waktu tujuh tahun Anda berakhir sebelum memakai hasil ini.",

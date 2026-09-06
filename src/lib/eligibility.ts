@@ -334,6 +334,33 @@ export function periksaKelayakan(profil: ProfilWajibPajak): HasilPemeriksaanKela
   syaratPphFinal.push(saringAmbangKonsolidasi(profil));
   syaratPphFinal.push(saringPintuSatuArah(profil));
 
+  if (profil.punyaLebihDariSatuKegiatan !== false) {
+    syaratPphFinal.push(syaratDari(ATURAN.pekerjaanBebas, 'PERLU_DIPASTIKAN',
+      'Daftar ini hanya memeriksa satu kegiatan. Pisahkan omzet usaha, pekerjaan bebas, dan penghasilan final lainnya sebelum memakai tarif 0,5%.'));
+  }
+  if (profil.pernahMelewatiAmbang !== false) {
+    syaratPphFinal.push(syaratDari(ATURAN.pintuSatuArahLewatAmbang, 'PERLU_DIPASTIKAN',
+      profil.pernahMelewatiAmbang === true
+        ? 'Anda pernah melewati ambang omzet pada tahun yang lebih lama. Tahun kejadian dan aturan peralihannya perlu diperiksa sebelum hak PPh Final dapat dipastikan.'
+        : 'Riwayat omzet sebelum tahun pembanding belum dipastikan. Periksa apakah sebelumnya pernah melewati ambang Rp4,8 miliar.'));
+  }
+
+  // Pasal II angka 1 huruf f memberi kemungkinan transisi sampai akhir 2026
+  // untuk pengecualian baru agregat OP + perseroan. Riwayat PP 55 belum diinput.
+  if (profil.tahunPajak === 2026 && lewatAmbangPphFinal(hitungOmzetKonsolidasi(profil)) &&
+      !lewatAmbangPphFinal(profil.omzetPribadiThnSebelumnya) &&
+      profil.omzetSeluruhPerseroanPeroranganThnSebelumnya > 0) {
+    const ambangIndex = syaratPphFinal.findIndex((s) => s.kode === ATURAN.ambangKonsolidasi.kode);
+    syaratPphFinal[ambangIndex] = syaratDari(ATURAN.ketentuanPeralihanAgregat2026, 'PERLU_DIPASTIKAN',
+      'Agregat omzet dengan perseroan perorangan melewati ambang. Ketentuan peralihan PP 20/2026 Pasal II angka 1 huruf f mungkin berlaku sampai akhir 2026; riwayat fasilitas PP 55/2022 perlu diperiksa.');
+  }
+
+  if (profil.tahunPajak === 2025) {
+    // Jangan memindahkan saringan baru 2026 menjadi vonis historis 2025.
+    syaratPphFinal.splice(0, syaratPphFinal.length, syaratDari(ATURAN.ketentuanPeralihan2025,
+      'PERLU_DIPASTIKAN', 'Kelayakan PPh Final tahun 2025 memerlukan aturan historis PP 55/2022 dan riwayat jangka waktu fasilitas. Pemeriksaan ini tidak memberi vonis atau nominal final untuk 2025.'));
+  }
+
   syaratNppn.push(saringAmbangNppn(profil));
   syaratNppn.push(saringPemberitahuanNppn(profil));
 
@@ -405,7 +432,7 @@ export function periksaKelayakan(profil: ProfilWajibPajak): HasilPemeriksaanKela
 
   if (profil.jugaPegawaiTetap) {
     peringatan.push(
-      'Anda juga menerima gaji sebagai pegawai. Gaji dan penghasilan usaha dilaporkan bersama dalam satu SPT Tahunan, dan PPh 21 atas gaji Anda dikreditkan di sana.'
+      'Untuk SPT Tahunan, NPPN dan tarif umum menggabungkan neto gaji yang Anda isi dengan neto usaha. Masukkan kredit PPh 21 gaji pada bukti potong. PPh Final hanya menunjukkan pajak usaha; pajak gaji dan setoran final belum dikurangkan di kartu tersebut.'
     );
   }
 

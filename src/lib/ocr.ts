@@ -15,7 +15,7 @@ import type { KreditPajakItem } from '@/types/pajak';
  * 3. Hasil bacaan wajib ditinjau pengguna sebelum dipakai.
  */
 
-export const BATAS_UKURAN_BERKAS = 4 * 1024 * 1024;
+export const BATAS_UKURAN_BERKAS = 3 * 1024 * 1024;
 
 export const JENIS_BERKAS_DIIZINKAN = ['image/jpeg', 'image/png', 'image/webp'] as const;
 
@@ -44,12 +44,13 @@ export class GalatLayananOcr extends Error {
 
 /** Memeriksa berkas sebelum apa pun meninggalkan perangkat pengguna. */
 export function periksaBerkasBupot(file: File): void {
+  if (file.size === 0) throw new GalatBerkas('Berkas foto kosong. Pilih gambar yang lain.');
   const jenisDiizinkan: readonly string[] = JENIS_BERKAS_DIIZINKAN;
   if (!jenisDiizinkan.includes(file.type)) {
     throw new GalatBerkas('Kirim foto berformat JPG, PNG, atau WebP.');
   }
   if (file.size > BATAS_UKURAN_BERKAS) {
-    throw new GalatBerkas('Ukuran foto melebihi 4 MB. Perkecil dulu fotonya.');
+    throw new GalatBerkas('Ukuran foto melebihi 3 MB. Perkecil dulu fotonya.');
   }
 }
 

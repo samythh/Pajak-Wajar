@@ -30,7 +30,7 @@ export function TombolUnduhKertasKerja({ hasil }: { hasil: HasilAuditPajak }) {
       document.body.appendChild(tautan);
       tautan.click();
       document.body.removeChild(tautan);
-      URL.revokeObjectURL(url);
+      window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
     } catch {
       setGalat('Berkas gagal dibuat di peramban ini. Coba lagi, atau salin angkanya dari layar.');
     } finally {

@@ -29,8 +29,8 @@ const warnaStatus: Record<StatusKelayakan, string> = {
 };
 
 const s = StyleSheet.create({
-  page: { padding: 42, fontSize: 9.5, color: '#14202E', fontFamily: 'Helvetica', lineHeight: 1.5 },
-  judul: { fontSize: 18, fontFamily: 'Helvetica-Bold', marginBottom: 2 },
+  page: { paddingTop: 42, paddingHorizontal: 42, paddingBottom: 68, fontSize: 9.5, color: '#14202E', fontFamily: 'Helvetica', lineHeight: 1.5 },
+  judul: { fontSize: 21, lineHeight: 1.25, fontFamily: 'Helvetica-Bold', marginBottom: 9 },
   subjudul: { fontSize: 9, color: '#5E6B7A', marginBottom: 14 },
   penafian: {
     borderLeftWidth: 3,
@@ -62,7 +62,7 @@ const s = StyleSheet.create({
     padding: 9,
     marginBottom: 8
   },
-  kartuJudul: { fontSize: 11, fontFamily: 'Helvetica-Bold', marginBottom: 3 },
+  kartuJudul: { fontSize: 16, lineHeight: 1.3, fontFamily: 'Helvetica-Bold', marginBottom: 12 },
   status: { fontSize: 8, fontFamily: 'Helvetica-Bold', letterSpacing: 0.8, marginBottom: 4 },
   poin: { flexDirection: 'row', marginBottom: 1.5 },
   penanda: { width: 11, color: '#5E6B7A' },
@@ -80,22 +80,21 @@ const s = StyleSheet.create({
   },
   kaki: {
     position: 'absolute',
-    bottom: 24,
+    top: 801,
     left: 42,
-    right: 42,
+    width: 511,
     fontSize: 7.5,
     color: '#5E6B7A',
     borderTopWidth: 0.7,
     borderTopColor: '#CBD3DC',
     paddingTop: 5,
-    flexDirection: 'row',
-    justifyContent: 'space-between'
+    textAlign: 'center'
   }
 });
 
 function Baris({ kunci, nilai }: { kunci: string; nilai: string }) {
   return (
-    <View style={s.baris}>
+    <View style={s.baris} wrap={false}>
       <Text style={s.kunci}>{kunci}</Text>
       <Text style={s.nilai}>{nilai}</Text>
     </View>
@@ -104,9 +103,9 @@ function Baris({ kunci, nilai }: { kunci: string; nilai: string }) {
 
 function Hitung({ kunci, nilai }: { kunci: string; nilai: string }) {
   return (
-    <View style={s.hitungBaris}>
-      <Text>{kunci}</Text>
-      <Text>{nilai}</Text>
+    <View style={s.hitungBaris} wrap={false}>
+      <Text style={{ width: '65%', paddingRight: 12 }}>{kunci}</Text>
+      <Text style={{ width: '35%', textAlign: 'right' }}>{nilai}</Text>
     </View>
   );
 }
@@ -122,21 +121,22 @@ function RincianSkema({ skema }: { skema: HasilSkema }) {
     return (
       <View style={{ marginTop: 5 }}>
         <Hitung kunci="Omzet pribadi tahun pajak" nilai={formatCurrency(r.omzetPribadi)} />
-        <Hitung kunci="Bagian yang dibebaskan" nilai={`- ${formatCurrency(r.batasPembebasan)}`} />
+        <Hitung kunci="Pembebasan omzet (maksimum)" nilai={formatCurrency(r.batasPembebasan)} />
         <Hitung kunci="Dasar pengenaan pajak" nilai={formatCurrency(r.dasarPengenaan)} />
         <Hitung kunci="Tarif" nilai={formatTarif(r.tarif)} />
         <View style={s.hitungTotal}>
-          <Text>Pajak terutang</Text>
+          <Text>Pajak usaha sebelum setoran final</Text>
           <Text>{formatCurrency(r.pajakTerutang)}</Text>
         </View>
+        <Text style={s.sitasi}>Setoran final belum dikurangkan. Nominal ini hanya mencakup pajak usaha, belum termasuk pajak atas gaji atau penghasilan lainnya.</Text>
       </View>
     );
   }
 
   const dasarNeto =
     r.skema === 'NPPN'
-      ? { label: `Norma ${formatPersenNorma(r.persenNorma)}`, nilai: formatCurrency(r.penghasilanNeto) }
-      : { label: 'Omzet dikurangi biaya usaha', nilai: formatCurrency(r.penghasilanNeto) };
+      ? { label: `Norma ${formatPersenNorma(r.persenNorma)}`, nilai: formatCurrency(r.penghasilanNetoUsaha) }
+      : { label: 'Omzet dikurangi biaya usaha', nilai: formatCurrency(r.penghasilanNetoUsaha) };
 
   return (
     <View style={{ marginTop: 5 }}>
@@ -145,8 +145,10 @@ function RincianSkema({ skema }: { skema: HasilSkema }) {
         <Hitung kunci="Biaya usaha" nilai={`- ${formatCurrency(r.biayaOperasional)}`} />
       )}
       <Hitung kunci={`Penghasilan neto (${dasarNeto.label})`} nilai={dasarNeto.nilai} />
+      {r.penghasilanNetoPegawai > 0 && <Hitung kunci="Neto pegawai sebelum PTKP" nilai={formatCurrency(r.penghasilanNetoPegawai)} />}
+      <Hitung kunci="Total penghasilan neto" nilai={formatCurrency(r.penghasilanNeto)} />
       <Hitung kunci="PTKP" nilai={`- ${formatCurrency(r.ptkp)}`} />
-      <Hitung kunci="Penghasilan Kena Pajak" nilai={formatCurrency(r.pkp)} />
+      <Hitung kunci="PKP (dibulatkan ke bawah, ribuan penuh)" nilai={formatCurrency(r.pkp)} />
       {r.lapisanTerpakai.map((lapis) => (
         <Hitung
           key={lapis.lapisan}
@@ -157,11 +159,16 @@ function RincianSkema({ skema }: { skema: HasilSkema }) {
       <Hitung kunci="Pajak sebelum kredit" nilai={formatCurrency(r.pajakSebelumKredit)} />
       <Hitung kunci="Kredit bukti potong" nilai={`- ${formatCurrency(r.kreditBupot)}`} />
       <View style={s.hitungTotal}>
-        <Text>Pajak terutang</Text>
+        <Text>Sisa setelah kredit bukti potong</Text>
         <Text>{formatCurrency(r.pajakTerutang)}</Text>
       </View>
+      {r.kelebihanKredit > 0 && <Text style={s.penafian}>Kredit melebihi perkiraan pajak sebesar {formatCurrency(r.kelebihanKredit)}. Cocokkan dalam SPT; bukan janji restitusi.</Text>}
     </View>
   );
+}
+
+function jawaban(value: boolean | 'tidak_yakin' | undefined): string {
+  return value === true ? 'Ya' : value === false ? 'Tidak' : 'Belum pasti';
 }
 
 export function KertasKerjaPdf({ hasil }: { hasil: HasilAuditPajak }) {
@@ -188,6 +195,9 @@ export function KertasKerjaPdf({ hasil }: { hasil: HasilAuditPajak }) {
 
         <View style={s.bagian}>
           <Text style={s.bagianJudul}>DATA YANG ANDA ISI</Text>
+          <Baris kunci="Bentuk kegiatan" nilai={profil.bentukKegiatan.replaceAll('_', ' ')} />
+          <Baris kunci="Status perpajakan pasangan" nilai={profil.statusPerpajakanPasangan.replaceAll('_', ' ')} />
+          <Baris kunci="Neto pegawai sebelum PTKP" nilai={!profil.jugaPegawaiTetap ? 'Bukan pegawai' : profil.penghasilanNetoPegawai === undefined ? 'Belum diisi' : formatCurrency(profil.penghasilanNetoPegawai)} />
           <Baris
             kunci="Kegiatan usaha (KLU)"
             nilai={klu ? `${klu.nama} (${klu.kluKode})` : profil.kluKode}
@@ -219,37 +229,16 @@ export function KertasKerjaPdf({ hasil }: { hasil: HasilAuditPajak }) {
             }
           />
           <Baris kunci="Total kredit bukti potong" nilai={formatCurrency(hasil.totalKreditBupot)} />
-        </View>
-
-        <View style={s.bagian}>
-          <Text style={s.bagianJudul}>HASIL PEMERIKSAAN KELAYAKAN</Text>
-          {hasil.skema.map((skema) => (
-            <View key={skema.id} style={{ ...s.kartu, borderLeftColor: warnaStatus[skema.statusKelayakan] }} wrap={false}>
-              <Text style={{ ...s.status, color: warnaStatus[skema.statusKelayakan] }}>
-                {labelStatus[skema.statusKelayakan]}
-              </Text>
-              <Text style={s.kartuJudul}>{namaSkema[skema.id]}</Text>
-              {skema.alasanKelayakan.map((alasan, index) => (
-                <View key={index} style={s.poin}>
-                  <Text style={s.penanda}>&ndash;</Text>
-                  <Text style={s.isiPoin}>{alasan}</Text>
-                </View>
-              ))}
-              {skema.konsekuensiJangkaPanjang ? (
-                <View style={s.poin}>
-                  <Text style={s.penanda}>!</Text>
-                  <Text style={s.isiPoin}>{skema.konsekuensiJangkaPanjang}</Text>
-                </View>
-              ) : null}
-              <RincianSkema skema={skema} />
-              <Text style={s.sitasi}>
-                Dasar hukum:{' '}
-                {skema.dasarHukum
-                  .map((d) => `${d.namaRegulasi} ${d.pasalAtauLampiran}`)
-                  .join(' · ')}
-              </Text>
-            </View>
-          ))}
+          <Baris kunci="Lebih dari satu kegiatan" nilai={jawaban(profil.punyaLebihDariSatuKegiatan)} />
+          <Baris kunci="Riwayat melewati ambang sebelum tahun pembanding" nilai={jawaban(profil.pernahMelewatiAmbang)} />
+          <Baris kunci="Pernah memilih tarif umum" nilai={jawaban(profil.pernahPilihTarifUmum)} />
+          <Baris kunci="Pemberitahuan NPPN tahun ini tepat waktu" nilai={jawaban(profil.sudahMemberitahukanNppn)} />
+          <Text style={{ ...s.bagianJudul, marginTop: 18 }}>RINGKASAN HASIL</Text>
+          {hasil.skema.map((skema) => <View key={skema.id} style={{ marginBottom: 9 }} wrap={false}>
+            <Text style={{ fontFamily: 'Helvetica-Bold' }}>{namaSkema[skema.id]}</Text>
+            <Text style={{ color: warnaStatus[skema.statusKelayakan], fontSize: 8 }}>{labelStatus[skema.statusKelayakan]}</Text>
+            <Text>{skema.statusKalkulasi === 'TERSEDIA' ? `${skema.id === 'PPH_FINAL_05' ? 'Pajak usaha sebelum setoran final' : 'Sisa setelah kredit'}: ${formatCurrency(skema.pajakTerutang)}` : 'Nominal belum ditampilkan. Lihat rincian skema.'}</Text>
+          </View>)}
         </View>
 
         {hasil.peringatan.length > 0 && (
@@ -276,13 +265,44 @@ export function KertasKerjaPdf({ hasil }: { hasil: HasilAuditPajak }) {
           </View>
         )}
 
-        <View style={s.kaki} fixed>
-          <Text>Basis aturan: {hasil.versiRegulasi}</Text>
-          <Text
-            render={({ pageNumber, totalPages }) => `Halaman ${pageNumber} dari ${totalPages}`}
-          />
-        </View>
+
+        <Text style={s.kaki} fixed render={({ pageNumber, totalPages }) => `PajakWajar / ${hasil.versiRegulasi} / Halaman ${pageNumber} dari ${totalPages}`} />
       </Page>
+      {hasil.skema.map((skema) => <Page key={skema.id} size="A4" style={s.page}>
+        <Text style={s.judul}>Kelayakan dan perhitungan</Text>
+        <Text style={s.subjudul}>PajakWajar / Tahun Pajak {profil.tahunPajak}</Text>
+        <View style={s.bagian}>
+          <Text style={s.bagianJudul}>HASIL PEMERIKSAAN KELAYAKAN</Text>
+            <View key={skema.id} style={{ ...s.kartu, borderLeftColor: warnaStatus[skema.statusKelayakan] }}>
+              <Text style={{ ...s.status, color: warnaStatus[skema.statusKelayakan] }}>
+                {labelStatus[skema.statusKelayakan]}
+              </Text>
+              <Text style={s.kartuJudul}>{namaSkema[skema.id]}</Text>
+              {skema.alasanKelayakan.map((alasan, index) => (
+                <View key={index} style={s.poin}>
+                  <Text style={s.penanda}>&ndash;</Text>
+                  <Text style={s.isiPoin}>{alasan}</Text>
+                </View>
+              ))}
+              {skema.konsekuensiJangkaPanjang ? (
+                <View style={s.poin}>
+                  <Text style={s.penanda}>!</Text>
+                  <Text style={s.isiPoin}>{skema.konsekuensiJangkaPanjang}</Text>
+                </View>
+              ) : null}
+              <RincianSkema skema={skema} />
+              <Text style={s.sitasi}>
+                Dasar hukum:{' '}
+                {skema.dasarHukum
+                  .map((d) => `${d.namaRegulasi} ${d.pasalAtauLampiran}`)
+                  .join(' · ')}
+              </Text>
+            </View>
+        </View>
+
+        <Text style={s.kaki} fixed render={({ pageNumber, totalPages }) => `PajakWajar / ${hasil.versiRegulasi} / Halaman ${pageNumber} dari ${totalPages}`} />
+      </Page>)}
+
     </Document>
   );
 }

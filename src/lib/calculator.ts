@@ -18,6 +18,11 @@ function bulatkanRupiah(nilai: number): number {
   return Math.round(nilai);
 }
 
+/** PKP dibulatkan ke bawah ke ribuan penuh, UU PPh Pasal 17 ayat (4). */
+export function bulatkanPkp(nilai: number): number {
+  return Math.floor(Math.max(0, nilai) / 1000) * 1000;
+}
+
 /**
  * Menghitung pajak progresif secara BERLAPIS: setiap lapisan hanya dikenakan
  * pada bagian PKP yang jatuh di dalamnya, bukan satu tarif untuk seluruh PKP.
@@ -30,7 +35,7 @@ export function hitungTarifProgresifBerlapis(
   pkp: number,
   lapisan: LapisanTarif[]
 ): { pajak: number; lapisanTerpakai: LapisanTerpakai[] } {
-  const sisaAwal = Math.max(0, pkp);
+  const sisaAwal = bulatkanPkp(pkp);
   const lapisanTerpakai: LapisanTerpakai[] = [];
   let pajak = 0;
 
@@ -100,10 +105,13 @@ export function hitungNppn(params: {
   ptkp: number;
   kreditBupot: number;
   lapisan: LapisanTarif[];
+  penghasilanNetoPegawai?: number;
 }): RincianNppn {
   const omzetPribadi = Math.max(0, params.omzetPribadi);
-  const penghasilanNeto = bulatkanRupiah(omzetPribadi * (params.persenNorma / 100));
-  const pkp = Math.max(0, penghasilanNeto - params.ptkp);
+  const penghasilanNetoUsaha = omzetPribadi * (params.persenNorma / 100);
+  const penghasilanNetoPegawai = Math.max(0, params.penghasilanNetoPegawai ?? 0);
+  const penghasilanNeto = penghasilanNetoUsaha + penghasilanNetoPegawai;
+  const pkp = bulatkanPkp(penghasilanNeto - params.ptkp);
   const { pajak, lapisanTerpakai } = hitungTarifProgresifBerlapis(pkp, params.lapisan);
   const kreditBupot = Math.max(0, params.kreditBupot);
 
@@ -112,11 +120,14 @@ export function hitungNppn(params: {
     omzetPribadi,
     persenNorma: params.persenNorma,
     penghasilanNeto,
+    penghasilanNetoUsaha,
+    penghasilanNetoPegawai,
     ptkp: params.ptkp,
     pkp,
     pajakSebelumKredit: pajak,
     kreditBupot,
     pajakTerutang: Math.max(0, pajak - kreditBupot),
+    kelebihanKredit: Math.max(0, kreditBupot - pajak),
     lapisanTerpakai
   };
 }
@@ -136,11 +147,14 @@ export function hitungTarifUmum(params: {
   ptkp: number;
   kreditBupot: number;
   lapisan: LapisanTarif[];
+  penghasilanNetoPegawai?: number;
 }): RincianTarifUmum {
   const omzetPribadi = Math.max(0, params.omzetPribadi);
   const biayaOperasional = Math.max(0, params.biayaOperasional);
-  const penghasilanNeto = Math.max(0, omzetPribadi - biayaOperasional);
-  const pkp = Math.max(0, penghasilanNeto - params.ptkp);
+  const penghasilanNetoUsaha = Math.max(0, omzetPribadi - biayaOperasional);
+  const penghasilanNetoPegawai = Math.max(0, params.penghasilanNetoPegawai ?? 0);
+  const penghasilanNeto = penghasilanNetoUsaha + penghasilanNetoPegawai;
+  const pkp = bulatkanPkp(penghasilanNeto - params.ptkp);
   const { pajak, lapisanTerpakai } = hitungTarifProgresifBerlapis(pkp, params.lapisan);
   const kreditBupot = Math.max(0, params.kreditBupot);
 
@@ -149,11 +163,14 @@ export function hitungTarifUmum(params: {
     omzetPribadi,
     biayaOperasional,
     penghasilanNeto,
+    penghasilanNetoUsaha,
+    penghasilanNetoPegawai,
     ptkp: params.ptkp,
     pkp,
     pajakSebelumKredit: pajak,
     kreditBupot,
     pajakTerutang: Math.max(0, pajak - kreditBupot),
+    kelebihanKredit: Math.max(0, kreditBupot - pajak),
     lapisanTerpakai
   };
 }

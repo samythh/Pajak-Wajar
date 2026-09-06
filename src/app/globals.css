@@ -27,6 +27,7 @@ button, summary, select { -webkit-tap-highlight-color: transparent; }
 button { touch-action: manipulation; }
 ::selection { background: #dce8f3; color: var(--ink); }
 :focus-visible { outline: 3px solid #2e6ca7; outline-offset: 3px; }
+.choice-control:has(input:focus-visible) { outline: 3px solid #2e6ca7; outline-offset: 3px; }
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button { appearance: none; margin: 0; }
 input[type='number'] { appearance: textfield; }

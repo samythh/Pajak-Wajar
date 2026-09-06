@@ -23,7 +23,8 @@ const profilDagang: ProfilWajibPajak = {
   omzetSeluruhPerseroanPeroranganThnSebelumnya: 0,
   sudahMemberitahukanNppn: true,
   pernahPilihTarifUmum: false,
-  jugaPegawaiTetap: false
+  jugaPegawaiTetap: false,
+  pernahMelewatiAmbang: false
 };
 
 const input = (profil: ProfilWajibPajak, kreditPajak: InputAuditPajak['kreditPajak'] = []) => ({

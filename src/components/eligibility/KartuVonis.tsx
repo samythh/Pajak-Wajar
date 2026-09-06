@@ -17,10 +17,10 @@ const tampilan: Record<StatusKelayakan, { label: string; simbol: string; border:
 function BarisHitung({ kunci, nilai, tebal }: { kunci: string; nilai: string; tebal?: boolean }) {
   return (
     <div
-      className={`flex items-baseline justify-between gap-4 py-1 ${tebal ? 'mt-1 border-t border-line pt-2 font-semibold' : ''}`}
+      className={`grid grid-cols-1 gap-1 py-1 sm:grid-cols-[minmax(0,1fr)_auto] sm:gap-4 ${tebal ? 'mt-1 border-t border-line pt-2 font-semibold' : ''}`}
     >
       <span className={tebal ? '' : 'text-margin'}>{kunci}</span>
-      <span className="font-mono tabular-nums">{nilai}</span>
+      <span className="break-all font-mono tabular-nums sm:text-right">{nilai}</span>
     </div>
   );
 }
@@ -39,9 +39,11 @@ function Perhitungan({ skema }: { skema: HasilSkema }) {
   return (
     <div className="mt-5 border border-line bg-paper/70 px-4 py-4 text-sm">
       <p className="mb-2 text-xs font-bold uppercase tracking-[0.14em] text-margin">
-        Perkiraan pajak setahun
+        {r.skema === 'PPH_FINAL_05' ? 'Pajak usaha setahun sebelum setoran' : 'Perkiraan sisa pajak setelah kredit'}
       </p>
-      <p className="mb-3 font-display text-3xl font-semibold">{formatCurrency(r.pajakTerutang)}</p>
+      <p className="mb-3 break-all font-display text-2xl font-semibold sm:text-3xl">{formatCurrency(r.pajakTerutang)}</p>
+      {r.skema === 'PPH_FINAL_05' && <p className="mb-3 text-xs leading-5 text-margin">Belum dikurangi setoran atau potongan pajak final. Kredit nonfinal pada formulir tidak mengurangi angka ini.</p>}
+      {r.skema !== 'PPH_FINAL_05' && r.kelebihanKredit > 0 && <p className="mb-3 text-xs leading-5 text-pending">Kredit melebihi perkiraan pajak sebesar {formatCurrency(r.kelebihanKredit)}. Cocokkan selisih ini dalam SPT.</p>}
 
       <details className="detail-panel group">
         <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-xs font-semibold">
@@ -66,14 +68,15 @@ function Perhitungan({ skema }: { skema: HasilSkema }) {
               ) : (
                 <BarisHitung
                   kunci={`Norma ${formatPersenNorma(r.persenNorma)} dari omzet`}
-                  nilai={formatCurrency(r.penghasilanNeto)}
+                  nilai={formatCurrency(r.penghasilanNetoUsaha)}
                 />
               )}
               {r.skema === 'TARIF_UMUM' && (
-                <BarisHitung kunci="Penghasilan bersih" nilai={formatCurrency(r.penghasilanNeto)} />
+                <BarisHitung kunci="Penghasilan neto usaha" nilai={formatCurrency(r.penghasilanNetoUsaha)} />
               )}
+              {r.penghasilanNetoPegawai > 0 && <><BarisHitung kunci="Penghasilan neto gaji" nilai={formatCurrency(r.penghasilanNetoPegawai)} /><BarisHitung kunci="Total penghasilan neto" nilai={formatCurrency(r.penghasilanNeto)} /></>}
               <BarisHitung kunci="PTKP" nilai={`− ${formatCurrency(r.ptkp)}`} />
-              <BarisHitung kunci="Penghasilan kena pajak" nilai={formatCurrency(r.pkp)} />
+              <BarisHitung kunci="PKP (dibulatkan ke bawah ke ribuan)" nilai={formatCurrency(r.pkp)} />
               {r.lapisanTerpakai.map((lapis) => (
                 <BarisHitung
                   key={lapis.lapisan}
@@ -98,7 +101,7 @@ export function KartuVonis({ hasil }: { hasil: HasilAuditPajak }) {
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4 border-b border-line pb-5">
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-blue">Hasil pengecekan</p>
-          <h2 id="judul-hasil" className="mt-1 font-display text-3xl font-semibold">
+          <h2 id="judul-hasil" tabIndex={-1} className="mt-1 font-display text-3xl font-semibold outline-none">
             Cara hitung pajak Anda
           </h2>
         </div>
@@ -122,7 +125,7 @@ export function KartuVonis({ hasil }: { hasil: HasilAuditPajak }) {
           return (
             <article
               key={item.id}
-              className={`motion-result relative overflow-hidden border-l-8 ${ui.border} bg-white px-5 py-6 sm:px-7`}
+              className={`motion-result relative min-w-0 border-l-4 ${ui.border} bg-white px-4 py-6 sm:border-l-8 sm:px-7`}
               style={{ animationDelay: `${100 + index * 110}ms` }}
             >
               <div className="flex items-center gap-3">

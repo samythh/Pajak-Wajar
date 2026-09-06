@@ -1,5 +1,16 @@
 # Register Regulasi
 
+## Catatan audit 6 September 2026
+
+PKP pada NPPN dan tarif umum dibulatkan ke bawah ke ribuan rupiah penuh sebelum tarif progresif, sesuai UU PPh Pasal 17 ayat (4). Neto gaji (sebelum PTKP) ditambahkan ke neto usaha pada skema nonfinal, dan PTKP dikurangkan sekali. Kelebihan kredit dicatat terpisah, bukan dihilangkan sebagai nihil.
+
+Kelayakan final 2025 ditahan untuk pemeriksaan aturan historis dan riwayat fasilitas PP 55/2022. Agregat OP dengan perseroan perorangan yang melewati ambang pada 2026 memerlukan pemeriksaan transisi Pasal II angka 1 huruf f PP 20/2026. Entri transisi baru berstatus `DALAM_REVIEW`; penambahan ini tidak menyatakan verifikasi manusia telah selesai.
+
+Perhitungan keluarga gabungan/PH/MT belum tersedia karena formulir belum mengambil neto pasangan dan pembagian pajak keluarga. Status ini ditampilkan jelas dan nominal tidak diterbitkan. Hal yang sama berlaku untuk gaji tanpa neto yang diisi, serta rugi usaha bercampur gaji.
+
+Sumber: [UU HPP pada DJP](https://www.pajak.go.id/index.php/id/peraturan/harmonisasi-peraturan-perpajakan), [teks resmi PP 20/2026](https://jdih.kemenkeu.go.id/api/download/d057ff82-50e7-4127-b66b-f704a36f071d/2026pp020.pdf). Register verifikasi sebelumnya dipertahankan di bawah sebagai riwayat.
+
+
 > Hanya isi dari JDIH Kementerian Keuangan, pajak.go.id, atau teks regulasi primer. Jangan salin ringkasan blog/media. Setiap entri harus diperiksa manusia sebelum dipakai rule engine.
 
 Seluruh entri di bawah dicocokkan ke **teks asli** yang diunduh dari JDIH Kemenkeu dan pajak.go.id pada 5 September 2026, lalu diekstrak dari lapisan teks PDF-nya. Salinan PP 20/2026 disimpan di [`docs/sumber/pp-20-2026.txt`](sumber/pp-20-2026.txt) agar setiap kutipan dapat dilacak ulang.
