@@ -7,7 +7,7 @@
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/AkuSukaProject/Pajak-Wajar)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 [![Status](https://img.shields.io/badge/Status-Aplikasi_Berfungsi-2ea44f?style=for-the-badge)](#fitur-unggulan)
-[![Tes](https://img.shields.io/badge/Vitest-136_lulus-2ea44f?style=for-the-badge)](#testing)
+[![Tes](https://img.shields.io/badge/Vitest-141_lulus-2ea44f?style=for-the-badge)](#testing)
 
 **Submission for ITECHNO CUP 2026 - Web Development**
 
@@ -187,7 +187,7 @@ OCR          : Gemini API, structured JSON, temperature 0; opsional dan butuh pe
 Package Mgmt : npm dengan package-lock.json
 Deployment   : Vercel (region sin1), https://pajak-wajar.vercel.app/
 CI/CD        : Belum ada workflow di repositori
-Testing      : Vitest; 136 tes rutin pada 8 berkas. Ajv 2020 untuk integritas data aturan
+Testing      : Vitest; 141 tes rutin pada 9 berkas. Ajv 2020 untuk integritas data aturan
 Type Check   : TypeScript (tsc --noEmit), tanpa `any`
 Monitoring   : Belum dikonfigurasi
 ```
@@ -519,7 +519,7 @@ npm run build
 
 ### Test Coverage
 
-**136 tes rutin** pada delapan berkas, ditambah satu tes integrasi OCR opsional:
+**141 tes rutin** pada sembilan berkas, ditambah satu tes integrasi OCR opsional:
 
 | Berkas | Tes | Fokus |
 |--------|-----|-------|
@@ -527,6 +527,7 @@ npm run build
 | [tests/calculator.test.ts](./tests/calculator.test.ts) | 14 | Tarif progresif berlapis, termasuk bukti bahwa PKP Rp337 juta ≠ PKP × 25% dan kecocokan dengan contoh resmi UU HPP (PKP Rp6 miliar → Rp1.794.000.000). |
 | [tests/eligibility.test.ts](./tests/eligibility.test.ts) | 32 | Agregasi prioritas dan empat saringan kelayakan. |
 | [tests/audit-pajak.test.ts](./tests/audit-pajak.test.ts) | 13 | Konsistensi status kalkulasi dan batasan perhitungan. |
+| [tests/saran.test.ts](./tests/saran.test.ts) | 5 | Saran kontekstual, perbandingan sebelum kredit, nilai sama, serta data keluarga atau Norma yang belum pasti. |
 | [tests/schemas.test.ts](./tests/schemas.test.ts) | 15 | Kontrak masukan formulir dan bukti potong. |
 | [tests/audit-regression.test.ts](./tests/audit-regression.test.ts) | 15 | Pembulatan PKP, gaji, kelebihan kredit, duplikasi bukti potong, batas pajak keluarga dan riwayat 2025/2026. |
 | [tests/format.test.ts](./tests/format.test.ts) | 13 | Pemisah ribuan pada isian nominal, termasuk jaminan titik tidak bocor ke perhitungan. |

@@ -110,15 +110,6 @@ export function KartuVonis({ hasil }: { hasil: HasilAuditPajak }) {
         </span>
       </div>
 
-      {hasil.rekomendasiHemat && (
-        <p className="mb-5 border-l-2 border-blue bg-white px-4 py-3 text-sm leading-6">
-          Dari cara yang boleh Anda pakai dan sudah bisa dihitung, yang paling ringan adalah{' '}
-          <strong>{namaSkema[hasil.rekomendasiHemat.id]}</strong> dengan perkiraan{' '}
-          <strong>{formatCurrency(hasil.rekomendasiHemat.pajakTerutang)}</strong>. Angka paling
-          ringan belum tentu paling tepat untuk keadaan Anda.
-        </p>
-      )}
-
       <div className="space-y-4">
         {hasil.skema.map((item, index) => {
           const ui = tampilan[item.statusKelayakan];
@@ -216,7 +207,8 @@ export function KartuVonis({ hasil }: { hasil: HasilAuditPajak }) {
 
       {hasil.langkahTindakLanjut.length > 0 && (
         <div className="mt-6 bg-ink p-5 text-white">
-          <p className="text-xs font-bold uppercase tracking-[0.15em] text-white/60">Langkah berikutnya</p>
+          <h3 className="text-lg font-semibold">Saran berdasarkan jawaban Anda</h3>
+          <p className="mt-1 text-xs leading-5 text-white/70">Pertimbangan skema dan langkah yang dapat Anda lakukan sebelum melapor.</p>
           <ul className="mt-3 space-y-2 text-sm leading-6">
             {hasil.langkahTindakLanjut.map((langkah) => (
               <li key={langkah} className="flex gap-3">

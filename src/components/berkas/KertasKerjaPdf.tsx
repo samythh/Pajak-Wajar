@@ -253,19 +253,6 @@ export function KertasKerjaPdf({ hasil }: { hasil: HasilAuditPajak }) {
           </View>
         )}
 
-        {hasil.langkahTindakLanjut.length > 0 && (
-          <View style={s.bagian}>
-            <Text style={s.bagianJudul}>LANGKAH BERIKUTNYA</Text>
-            {hasil.langkahTindakLanjut.map((teks, index) => (
-              <View key={index} style={s.poin}>
-                <Text style={s.penanda}>{index + 1}.</Text>
-                <Text style={s.isiPoin}>{teks}</Text>
-              </View>
-            ))}
-          </View>
-        )}
-
-
         <Text style={s.kaki} fixed render={({ pageNumber, totalPages }) => `PajakWajar / ${hasil.versiRegulasi} / Halaman ${pageNumber} dari ${totalPages}`} />
       </Page>
       {hasil.skema.map((skema) => <Page key={skema.id} size="A4" style={s.page}>
@@ -303,6 +290,23 @@ export function KertasKerjaPdf({ hasil }: { hasil: HasilAuditPajak }) {
         <Text style={s.kaki} fixed render={({ pageNumber, totalPages }) => `PajakWajar / ${hasil.versiRegulasi} / Halaman ${pageNumber} dari ${totalPages}`} />
       </Page>)}
 
+      <Page size="A4" style={s.page}>
+        <Text style={s.judul}>Saran dan langkah berikutnya</Text>
+        <Text style={s.subjudul}>PajakWajar / Tahun Pajak {profil.tahunPajak}</Text>
+        {hasil.langkahTindakLanjut.length > 0 && (
+          <View style={s.bagian}>
+            <Text style={s.bagianJudul}>SARAN BERDASARKAN JAWABAN ANDA</Text>
+            {hasil.langkahTindakLanjut.map((teks, index) => (
+              <View key={index} style={s.poin}>
+                <Text style={s.penanda}>{index + 1}.</Text>
+                <Text style={s.isiPoin}>{teks}</Text>
+              </View>
+            ))}
+          </View>
+        )}
+        <Text style={s.penafian}>Saran ini berdasarkan jawaban dan perhitungan yang tersedia, bukan penetapan pajak. Verifikasi persyaratan dan dokumen Anda sebelum melapor.</Text>
+        <Text style={s.kaki} fixed render={({ pageNumber, totalPages }) => `PajakWajar / ${hasil.versiRegulasi} / Halaman ${pageNumber} dari ${totalPages}`} />
+      </Page>
     </Document>
   );
 }

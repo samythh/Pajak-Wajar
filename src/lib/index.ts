@@ -3,6 +3,7 @@ import { periksaKelayakan } from '@/lib/eligibility';
 import type { KelayakanSkema } from '@/lib/eligibility';
 import { basisAturan, cariKlu, persenNorma } from '@/lib/regulasi';
 import { inputAuditPajakSchema } from '@/lib/schemas';
+import { susunSaran } from '@/lib/saran';
 import type {
   HasilAuditPajak,
   HasilSkema,
@@ -219,7 +220,7 @@ export function auditPajakMandiri(input: InputAuditPajak): HasilAuditPajak {
       )
     : undefined;
 
-  return {
+  const hasil: HasilAuditPajak = {
     versiRegulasi: basisAturan.versiRegulasi,
     tanggalAudit: new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Jakarta', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date()),
     profil,
@@ -232,6 +233,7 @@ export function auditPajakMandiri(input: InputAuditPajak): HasilAuditPajak {
       ? { id: rekomendasiHemat.id, pajakTerutang: rekomendasiHemat.pajakTerutang }
       : undefined
   };
+  return { ...hasil, langkahTindakLanjut: susunSaran(hasil) };
 }
 
 export { GalatMasukan };
