@@ -5,6 +5,7 @@ import { InputBuktiPotong } from '@/components/eligibility/InputBuktiPotong';
 import { KartuVonis } from '@/components/eligibility/KartuVonis';
 import { InputRupiah } from '@/components/ui/InputRupiah';
 import { PanelProses } from '@/components/ui/StatusProses';
+import { PetunjukWaji } from '@/components/ui/PetunjukWaji';
 import { auditPajakMandiri } from '@/lib/index';
 import { basisAturan, daftarKlu } from '@/lib/regulasi';
 import type {
@@ -91,6 +92,15 @@ const judulLangkah = [
 ];
 
 const jumlahLangkah = judulLangkah.length;
+
+const petunjukLangkah = [
+  { suasana: 'menyapa', judul: 'Kita mulai dari tahunnya, ya.', pesan: 'Pilih tahun saat penghasilan diterima, bukan tahun Anda mengisi laporan.' },
+  { suasana: 'berpikir', judul: 'Mana yang paling menggambarkan pekerjaan Anda?', pesan: 'Baca pilihan satu per satu. Pilih “Belum yakin” jika bentuk kegiatannya masih membingungkan.' },
+  { suasana: 'memeriksa', judul: 'Siapkan catatan uang masuk dan biaya.', pesan: 'Isi sesuai catatan Anda. Jika biaya belum diketahui, biarkan kosong.' },
+  { suasana: 'berpikir', judul: 'Sekarang, lihat catatan tahun sebelumnya.', pesan: 'Perhatikan tahun pada kolom agar angka tahun ini tidak tertukar dengan tahun lalu.' },
+  { suasana: 'memberitahu', judul: 'Tidak perlu menebak riwayat Anda.', pesan: 'Jika belum ingat atau belum punya buktinya, pilihan “Tidak yakin” boleh digunakan.' },
+  { suasana: 'memeriksa', judul: 'Mari cocokkan bukti potongnya.', pesan: 'Bisa diketik manual atau dibaca dari foto. Periksa angkanya sebelum menambahkan bukti.' }
+] as const;
 
 function PilihanTiga({
   nama,
@@ -245,6 +255,7 @@ export function AlurKelayakan() {
         key={langkah}
         className={`min-h-[430px] px-5 py-7 sm:px-8 sm:py-9 ${arah === 'maju' ? 'motion-step-next' : 'motion-step-back'}`}
       >
+        <PetunjukWaji {...petunjukLangkah[langkah]} />
         {langkah === 0 && (
           <fieldset>
             <legend className="text-xl font-semibold">Penghasilan tahun berapa yang ingin diperiksa?</legend>

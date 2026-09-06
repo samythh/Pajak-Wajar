@@ -216,8 +216,13 @@ export function KartuVonis({ hasil }: { hasil: HasilAuditPajak }) {
 
       {hasil.langkahTindakLanjut.length > 0 && (
         <div className="mt-6 bg-ink p-5 text-white">
-          <h3 className="text-lg font-semibold">Saran berdasarkan jawaban Anda</h3>
-          <p className="mt-1 text-xs leading-5 text-white/70">Pertimbangan skema dan langkah yang dapat Anda lakukan sebelum melapor.</p>
+          <div className="flex items-center gap-3">
+            <Maskot suasana="memberitahu" className="w-16 sm:w-20" />
+            <div className="min-w-0">
+              <h3 className="text-lg font-semibold">Saran berdasarkan jawaban Anda</h3>
+              <p className="mt-1 text-xs leading-5 text-white/70">Pertimbangan skema dan langkah yang dapat Anda lakukan sebelum melapor.</p>
+            </div>
+          </div>
           <ul className="mt-3 space-y-2 text-sm leading-6">
             {hasil.langkahTindakLanjut.map((langkah) => (
               <li key={langkah} className="flex gap-3">

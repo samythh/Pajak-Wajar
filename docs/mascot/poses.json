@@ -1,0 +1,26 @@
+[
+  {
+    "tahap": "poseThinkingFinal",
+    "prompt": "Use case: identity-preserve. Edit the supplied Waji mascot into a new full-body pose for the same tax website. Preserve this exact character identity: ivory paper body with folded upper-right corner, three pale-blue ledger lines on the lower body, navy blue mitten hands and boots, same large friendly eyes, pale-blue cheeks, matte soft 3D material, proportions and lighting. One character centered on a square canvas, all limbs visible, generous 8% padding on every edge, genuinely transparent alpha background, no floor, no text, no letters, no watermark, no speech bubbles. Change only pose/expression and any explicitly requested prop. Create the THINKING pose with a hand touching its chin and the other resting at its side. Keep original black/navy eyes (do not add white eyeballs), gentle thoughtful closed smile, slight head/body tilt. Isolated character on transparent background, clean cutout, no halo, no shadow outside the character, no checkerboard. Exactly same square framing and character scale as reference."
+  },
+  {
+    "tahap": "poseThinkingWhite",
+    "prompt": "Edit the provided Waji thinking mascot image. Replace only the patterned background with a completely flat pure white (#FFFFFF) background. No checkerboard, no gradient, no halo, no floor shadow. Keep the entire character exactly the same, including thoughtful hand-on-chin pose, face, ivory paper, navy limbs, folded corner, and ledger lines. Square full-body image, character centered with all limbs fully visible and 8 percent breathing space."
+  },
+  {
+    "tahap": "poseExplain",
+    "prompt": "Use case: identity-preserve. Edit the supplied Waji mascot into a new full-body pose for the same tax website. Preserve this exact character identity: ivory paper body with folded upper-right corner, three pale-blue ledger lines on the lower body, navy blue mitten hands and boots, same large friendly eyes, pale-blue cheeks, matte soft 3D material, proportions and lighting. One character centered on a square canvas, all limbs visible, generous 8% padding on every edge, genuinely transparent alpha background, no floor, no text, no letters, no watermark, no speech bubbles. Change only pose/expression and any explicitly requested prop. Pose EXPLAINING: one arm extended outward with an open upturned palm as though presenting a helpful tip, other hand lifted beside its face with one finger raised in a gentle 'here is a tip' gesture. Warm confident smile, eyes looking at viewer. No props. Background must be empty transparent pixels; never draw a checkerboard pattern."
+  },
+  {
+    "tahap": "poseCheck",
+    "prompt": "Use case: identity-preserve. Edit the supplied Waji mascot into a new full-body pose for the same tax website. Preserve this exact character identity: ivory paper body with folded upper-right corner, three pale-blue ledger lines on the lower body, navy blue mitten hands and boots, same large friendly eyes, pale-blue cheeks, matte soft 3D material, proportions and lighting. One character centered on a square canvas, all limbs visible, generous 8% padding on every edge, genuinely transparent alpha background, no floor, no text, no letters, no watermark, no speech bubbles. Change only pose/expression and any explicitly requested prop. Pose CHECKING NOTES: the character holds a small light-blue clipboard in one hand and a short navy pencil in the other, looking down attentively at the clipboard with a gentle focused smile. Clipboard has only a few simple lines and no readable writing. Keep face and folded corner fully visible. Background must be empty transparent pixels; never draw a checkerboard pattern."
+  },
+  {
+    "tahap": "poseCelebrate",
+    "prompt": "Use case: identity-preserve. Edit the supplied Waji mascot into a new full-body pose for the same tax website. Preserve this exact character identity: ivory paper body with folded upper-right corner, three pale-blue ledger lines on the lower body, navy blue mitten hands and boots, same large friendly eyes, pale-blue cheeks, matte soft 3D material, proportions and lighting. One character centered on a square canvas, all limbs visible, generous 8% padding on every edge, genuinely transparent alpha background, no floor, no text, no letters, no watermark, no speech bubbles. Change only pose/expression and any explicitly requested prop. Pose CELEBRATING COMPLETION: both navy arms raised happily beside its body, delighted open smile, one boot lifted slightly in a small celebratory hop. Preserve the recognizable original face. No confetti or extra objects. Background must be empty transparent pixels; never draw a checkerboard pattern."
+  },
+  {
+    "tahap": "poseCelebrateWhite",
+    "prompt": "Edit the supplied celebrating Waji mascot image. Replace only the checkerboard background with a completely flat pure white (#FFFFFF) background. No checkerboard, no gradient, no halo, no floor shadow. Preserve the entire character exactly: both hands raised, one boot lifted, delighted smile, ivory paper body, folded corner, blue cheeks, navy limbs and ledger lines. Square full-body composition with 8 percent padding around all limbs."
+  }
+]

@@ -123,8 +123,12 @@ input[type='number'] { appearance: textfield; }
 }
 .mascot { pointer-events: none; transform-origin: center bottom; }
 .mascot-menyapa { animation: mascot-greet 1100ms ease-out both; }
+.mascot-berpikir { animation: mascot-think 2200ms ease-in-out 2; }
+.mascot-memberitahu { animation: mascot-greet 900ms ease-out both; }
+.mascot-memeriksa { animation: mascot-think 1800ms ease-in-out 2; }
 .mascot-memproses { animation: mascot-think 2200ms ease-in-out infinite; }
 .mascot-selesai { animation: mascot-celebrate 800ms cubic-bezier(.22, 1, .36, 1) both; }
+.mascot-berpikir img, .mascot-selesai img { border-radius: 16px; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
