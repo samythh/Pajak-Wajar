@@ -325,7 +325,7 @@ export function periksaKelayakan(profil: ProfilWajibPajak): HasilPemeriksaanKela
       dasarHukum: dasarKluTidakDikenal
     });
     langkahTindakLanjut.push(
-      'Cari kode KLU usaha Anda di akun Coretax atau tanyakan ke Kring Pajak 1500200, lalu ulangi pengecekan.'
+      'Cocokkan kegiatan dan kode KLU Anda di akun Coretax atau tanyakan ke Kring Pajak 1500200. Jika kegiatan belum tersedia di sini, jangan memilih kategori yang hanya mirip.'
     );
   } else {
     syaratPphFinal.push(saringPekerjaanBebas(profil, klu));
