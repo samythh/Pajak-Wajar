@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { Maskot } from '@/components/ui/Maskot';
 
 export const metadata: Metadata = {
   title: 'PajakWajar — Cek cara hitung pajak yang boleh dipakai',
@@ -57,8 +58,16 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="relative flex items-center bg-[#E8EDF2] px-5 py-14 sm:px-10 lg:min-h-[720px] lg:px-14">
+        <div className="relative flex flex-col items-center justify-center gap-7 bg-[#E8EDF2] px-5 py-10 sm:px-10 lg:min-h-[720px] lg:px-14">
           <div className="absolute right-0 top-0 h-28 w-28 border-b border-l border-line/70" aria-hidden="true" />
+          <div className="relative flex w-full max-w-[560px] items-center gap-4">
+            <Maskot className="w-28 sm:w-36" priority />
+            <div className="min-w-0">
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-blue">Kenalan dengan Waji</p>
+              <p className="mt-2 font-display text-xl font-semibold leading-snug sm:text-2xl">Pelan-pelan, kita cek satu per satu.</p>
+              <p className="mt-2 text-xs leading-5 text-margin">Teman kecil Anda di PajakWajar.</p>
+            </div>
+          </div>
           <div className="motion-document relative mx-auto w-full max-w-[560px] bg-white p-5 shadow-[0_28px_80px_rgba(20,32,46,0.16)] sm:p-8">
             <div className="flex items-start justify-between gap-5 border-b-2 border-ink pb-5">
               <div><p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-margin">Contoh tampilan</p><h2 className="mt-2 font-display text-2xl font-semibold sm:text-3xl">Hasil pengecekan</h2></div>

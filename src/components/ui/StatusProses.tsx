@@ -1,3 +1,5 @@
+import { Maskot } from '@/components/ui/Maskot';
+
 /** Ikon dekoratif; status proses selalu disertai teks yang dapat dibaca. */
 export function IkonStatus({ sukses = false, besar = false }: { sukses?: boolean; besar?: boolean }) {
   return (
@@ -16,13 +18,9 @@ export function IkonStatus({ sukses = false, besar = false }: { sukses?: boolean
 export function PanelProses({ judul, keterangan }: { judul: string; keterangan: string }) {
   return (
     <div role="status" className="motion-page process-panel relative overflow-hidden border border-blue/15 bg-white p-6 text-center sm:p-10">
-      <div className="scan-document mx-auto mb-6" aria-hidden="true">
-        <span className="scan-line" />
-        <span className="block h-2 w-8 rounded bg-blue/25" />
-        <span className="mt-5 block h-1.5 w-full rounded bg-blue/15" />
-        <span className="mt-3 block h-1.5 w-3/4 rounded bg-blue/15" />
-        <span className="mt-3 block h-1.5 w-full rounded bg-blue/15" />
-        <span className="absolute -bottom-3 -right-3 rounded-full bg-white text-blue"><IkonStatus besar /></span>
+      <div className="relative mx-auto mb-6 w-32" aria-hidden="true">
+        <Maskot suasana="memproses" className="w-32" priority />
+        <span className="absolute bottom-0 right-0 grid h-10 w-10 place-items-center rounded-full border border-blue/10 bg-white text-blue shadow-sm"><IkonStatus /></span>
       </div>
       <p className="font-display text-2xl font-semibold text-ink">{judul}</p>
       <p className="mx-auto mt-2 max-w-xs text-sm leading-6 text-margin">{keterangan}</p>
